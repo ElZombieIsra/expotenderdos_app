@@ -1,5 +1,6 @@
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:expotenderos_app/services/database.dart';
+import 'package:expotenderos_app/services/api.dart';
 
 class SyncPresenter {
 
@@ -26,5 +27,26 @@ class SyncPresenter {
     }
 
     return null;
+  }
+
+  Future<bool> syncShopkeepers() async {
+    ExpoTenderosApi api = ExpoTenderosApi();
+    try {
+      List<Shopkeeper> shopkeepers = await this.getKeepers(false);
+      bool tmp = false;
+      for (var i = 0; i < shopkeepers.length; i++) {
+        Shopkeeper keeper = shopkeepers[i];
+        bool synced = await api.syncShopkeeper(keeper);
+        if (synced) {
+          keeper.synced = true;
+          int id = await keeper.save();
+          if (id != null) tmp = true;
+        }
+      }
+      return tmp;
+    } catch (e) {
+      print("Api error");
+      return false;
+    }
   }
 }

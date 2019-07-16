@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           decoration: fieldDecoration(
                             hint: 'Correo',
+                            label: true,
                             suffixIcon: Icon(Icons.mail_outline),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           decoration: fieldDecoration(
                             hint: 'Contraseña',
+                            label: true,
                             suffixIcon: Icon(Icons.lock_open),
                           ),
                           obscureText: true,

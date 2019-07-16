@@ -9,10 +9,12 @@ class MasterScaffold extends StatefulWidget {
   final Widget body;
   final String title;
   final Widget bottom;
+  final Widget floatingActionButton;
 
   MasterScaffold(this.body, {
     this.title,
-    this.bottom
+    this.bottom,
+    this.floatingActionButton,
   });
 
   @override
@@ -80,6 +82,7 @@ class _MasterScaffoldState extends State<MasterScaffold> {
         ),
       ),
       body: widget.body,
+      floatingActionButton: widget.floatingActionButton,
     );
   }
 }

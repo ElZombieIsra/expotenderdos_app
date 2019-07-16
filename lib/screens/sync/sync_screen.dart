@@ -1,8 +1,10 @@
 import 'package:expotenderos_app/models/Shopkeeper.dart';
+import 'package:expotenderos_app/style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/components/master_scaffold.dart';
 import 'sync_presenter.dart';
+import 'package:expotenderos_app/globals.dart' as globals;
 
 class SyncScreen extends StatefulWidget {
   @override
@@ -27,22 +29,59 @@ class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return MasterScaffold(
-      TabBarView(
-        controller: _controller,
-        children: [
-          ShopkeepersView(false),
-          ShopkeepersView(true),
-        ],
-      ),
-      title: "Tenderos",
-      bottom: TabBar(
-        controller: _controller,
-        tabs: [
-          Tab(text: "No sincronizados",),
-          Tab(text: "Sincronizados",),
-        ],
-      ),
+    return Builder(
+      builder: (BuildContext ctx) {
+        return MasterScaffold(
+          TabBarView(
+            controller: _controller,
+            children: [
+              ShopkeepersView(false),
+              ShopkeepersView(true),
+            ],
+          ),
+          title: "Tenderos",
+          bottom: TabBar(
+            indicatorColor: secondaryColor,
+            controller: _controller,
+            tabs: [
+              Tab(text: "No sincronizados",),
+              Tab(text: "Sincronizados",),
+            ],
+          ),
+          floatingActionButton: FloatingButton(),
+        );
+      },
+    );
+  }
+}
+
+class FloatingButton extends StatefulWidget {
+  @override
+  _FloatingButtonState createState() => _FloatingButtonState();
+}
+
+class _FloatingButtonState extends State<FloatingButton> {
+
+  SyncPresenter presenter = SyncPresenter();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: secondaryColor,
+      child: Icon(Icons.sync),
+      onPressed: (){
+        presenter.syncShopkeepers()
+        .then((synced) {
+          if (synced) {
+            setState(() {
+              globals.showSnackbar(context, "Tenderos sincronizados");
+            });
+          }
+          else{
+            globals.showSnackbar(context, "Ocurrió un error al sincronizar");
+          }
+        });
+      },
     );
   }
 }

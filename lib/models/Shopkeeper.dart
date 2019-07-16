@@ -17,6 +17,7 @@ class Shopkeeper{
 
   String code;
   bool privacy = false;
+  bool synced = false;
 
   Shopkeeper() {
     this.shop = Shop();
@@ -49,6 +50,7 @@ class Shopkeeper{
 
     this.code = obj["code"];
     this.privacy = obj["privacy"] == "1" ? true : false;
+    this.synced = obj["synced"] == "1" ? true : false;
   }
 
   Map<String, dynamic> toMap() {
@@ -70,6 +72,7 @@ class Shopkeeper{
 
     map["code"] = this.code;
     map["privacy"] = this.privacy ? 1 : 0;
+    map["synced"] = this.synced ? 1 : 0;
 
     return map;
   }
