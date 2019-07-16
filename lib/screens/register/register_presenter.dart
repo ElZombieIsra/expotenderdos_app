@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:location/location.dart';
 
 class RegisterPresenter {
 
@@ -26,7 +27,7 @@ class RegisterPresenter {
     shopkeeper.shop.name = controllers[4].text;
     shopkeeper.shop.address = controllers[5].text;
     shopkeeper.shop.picture = "asdasd";
-    shopkeeper.shop.location = "ññññ";
+    shopkeeper.shop.location = await getCoordinates();
 
     shopkeeper.code = controllers[6].text;
     int id = await shopkeeper.save();
@@ -43,6 +44,28 @@ class RegisterPresenter {
       print(e);
       return null;
     }
+  }
+
+  Future<LocationData> getLocation() async {
+    Location location = Location();
+    try {
+      if (await location.hasPermission()) {
+        return await location.getLocation();
+      }
+      else {
+        location.requestPermission();
+      }
+    } catch (e) {
+    } 
+    return null;
+  }
+
+  Future<String> getCoordinates() async {
+    LocationData data = await getLocation();
+    if (data != null) {
+      return "${data.latitude}, ${data.longitude}";
+    }
+    return null;
   }
 
 }
