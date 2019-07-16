@@ -9,6 +9,8 @@ class ImageHelper {
   Future<File> getImage() async {
     File image = await ImagePicker.pickImage(
       source: ImageSource.camera,
+      maxHeight: 480,
+      maxWidth: 640,
     );
 
     if (image != null) {
