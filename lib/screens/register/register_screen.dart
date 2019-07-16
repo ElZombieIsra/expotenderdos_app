@@ -28,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Validations validations = Validations();
   Shopkeeper shopkeeper = Shopkeeper();
   RegisterPresenter presenter = RegisterPresenter();
+  var img;
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +186,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             ListTile(
+              title: Builder(
+                builder: (BuildContext ctx) {
+                  if (img != null) {
+                    return SizedBox(
+                      height: 300.0,
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: Image.file(img),
+                      ),
+                    );
+                  }
+                  return RaisedButton(
+                    child: Text("Tomar foto"),
+                    onPressed: () {
+                      presenter.getPicture()
+                      .then((pic) => setState(() {
+                        if (pic != null) {
+                          shopkeeper.shop.picture = pic.path;
+                          img = pic;
+                        }
+                      }));
+                    },
+                  );
+                },
+              ),
+            ),
+            ListTile(
               leading: Checkbox(
                 value: shopkeeper.privacy,
                 onChanged: (val) => setState(() => shopkeeper.privacy = val),
@@ -224,7 +252,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ];
                                 autovalidate = false;
                                 formKey.currentState?.reset();
+                                img = null;
                               });
+                            }
+                            else {
+                              globals.showSnackbar(ctx, "No se pudo guardar");
                             }
                           });
                         }

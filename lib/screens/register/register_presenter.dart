@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 import 'package:location/location.dart';
+import 'package:expotenderos_app/services/image.dart';
 
 class RegisterPresenter {
 
@@ -26,12 +29,23 @@ class RegisterPresenter {
 
     shopkeeper.shop.name = controllers[4].text;
     shopkeeper.shop.address = controllers[5].text;
-    shopkeeper.shop.picture = "asdasd";
+    // shopkeeper.shop.picture = "asdasd";
+
+    // File imgFile = File(shopkeeper.shop.picture);
+    // List<int> bytes = await imgFile.readAsBytes();
+    // String base64 = base64Encode(bytes);
+    // print(base64.length);
+
     shopkeeper.shop.location = await getCoordinates();
 
     shopkeeper.code = controllers[6].text;
     int id = await shopkeeper.save();
     return id;
+  }
+
+  Future<File> getPicture() async {
+    File img = await ImageHelper().getImage();
+    return img;
   }
 
   Future<String> readQrCode() async {
@@ -49,13 +63,12 @@ class RegisterPresenter {
   Future<LocationData> getLocation() async {
     Location location = Location();
     try {
-      if (await location.hasPermission()) {
-        return await location.getLocation();
+      if (!(await location.hasPermission())) {
+        await location.requestPermission();
       }
-      else {
-        location.requestPermission();
-      }
+      return await location.getLocation();
     } catch (e) {
+      print(e);
     } 
     return null;
   }
