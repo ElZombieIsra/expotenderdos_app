@@ -4,8 +4,6 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageHelper {
 
-  File _image;
-
   ImageHelper();
 
   Future<File> getImage() async {

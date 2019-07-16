@@ -1,4 +1,3 @@
-import 'package:expotenderos_app/globals.dart' as globals;
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:flutter/material.dart';
 
