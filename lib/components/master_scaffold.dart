@@ -8,9 +8,11 @@ class MasterScaffold extends StatefulWidget {
 
   final Widget body;
   final String title;
+  final Widget bottom;
 
   MasterScaffold(this.body, {
-    this.title
+    this.title,
+    this.bottom
   });
 
   @override
@@ -23,6 +25,7 @@ class _MasterScaffoldState extends State<MasterScaffold> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title ?? globals.title),
+        bottom: widget.bottom,
       ),
       drawer: Drawer(
         child: ListView(
@@ -50,6 +53,10 @@ class _MasterScaffoldState extends State<MasterScaffold> {
             ListTile(
               title: Text("Registrar tendero"),
               onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/registerShopkeeper", (_) => false),
+            ),
+            ListTile(
+              title: Text("Sincronizar tenderos"),
+              onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false),
             ),
             ListTile(
               title: Text("Cerrar Sesión"),

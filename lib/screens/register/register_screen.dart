@@ -174,7 +174,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hint: "Código",
                   suffixIcon: IconButton(
                     icon: Icon(Icons.camera_alt),
-                    onPressed: (){},
+                    onPressed: (){
+                      presenter.readQrCode().then((val) => _controllers[6].text = val);
+                    },
                   ),
                 ),
                 keyboardType: TextInputType.number,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/models/Shopkeeper.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
 
 class RegisterPresenter {
 
@@ -30,6 +31,18 @@ class RegisterPresenter {
     shopkeeper.code = controllers[6].text;
     int id = await shopkeeper.save();
     return id;
+  }
+
+  Future<String> readQrCode() async {
+    try {
+      String res = await QRCodeReader()
+        .setAutoFocusIntervalInMs(500)
+        .scan();
+      return res;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
 }
