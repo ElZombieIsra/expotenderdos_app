@@ -48,40 +48,72 @@ class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateM
               Tab(text: "Sincronizados",),
             ],
           ),
-          floatingActionButton: FloatingButton(),
+          floatingActionButton: FloatingButtons(),
         );
       },
     );
   }
 }
 
-class FloatingButton extends StatefulWidget {
+class FloatingButtons extends StatefulWidget {
   @override
-  _FloatingButtonState createState() => _FloatingButtonState();
+  _FloatingButtonsState createState() => _FloatingButtonsState();
 }
 
-class _FloatingButtonState extends State<FloatingButton> {
+class _FloatingButtonsState extends State<FloatingButtons> {
 
   SyncPresenter presenter = SyncPresenter();
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: secondaryColor,
-      child: Icon(Icons.sync),
-      onPressed: (){
-        presenter.syncShopkeepers()
-        .then((synced) {
-          if (synced) {
-            setState(() {
-              globals.showSnackbar(context, "Tenderos sincronizados");
-            });
-          }
-          else{
-            globals.showSnackbar(context, "Ocurrió un error al sincronizar");
-          }
-        });
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        FloatingActionButton(
+          mini: true,
+          backgroundColor: secondaryColor,
+          child: Icon(Icons.add),
+          onPressed: (){
+            Navigator.pushNamedAndRemoveUntil(context, "/registerShopkeeper", (_) => false);
+          },
+        ),
+        Container(
+          height: 10.0,
+          width: 0.0,
+        ),
+        FutureBuilder(
+          future: presenter.getKeepers(false),
+          builder: (BuildContext ctx, snap) {
+            return FloatingActionButton(
+              heroTag: "0",
+              backgroundColor: secondaryColor,
+              child: Icon(
+                snap.hasData && snap.data.length > 0 
+                ? Icons.sync 
+                : Icons.sync_disabled
+              ),
+              onPressed: () {
+                if (snap.hasData && snap.data.length > 0) {
+                  presenter.syncShopkeepers()
+                  .then((synced) {
+                    if (synced) {
+                      setState(() {
+                        globals.showSnackbar(context, "Tenderos sincronizados");
+                      });
+                    }
+                    else{
+                      globals.showSnackbar(context, "Ocurrió un error al sincronizar");
+                    }
+                  });
+                }
+                else {
+                  globals.showSnackbar(context, "No hay tenderos para sincronizar");
+                }
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -1,7 +1,8 @@
+import 'package:expotenderos_app/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'routes.dart';
 import 'style.dart';
-import 'screens/HomeScreen.dart';
+// import 'screens/HomeScreen.dart';
 import 'globals.dart' as globals;
 
 void main() => runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "${globals.title}",
       theme: appTheme,
-      home: HomeScreen(),
+      home: LoginScreen(),
       routes: routes,
     );
   }

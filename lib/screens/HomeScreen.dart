@@ -18,14 +18,14 @@ class HomeScreen extends StatelessWidget {
       .then((someone){
         if (someone != null) {
           globals.user = someone;
-          Navigator.of(context).pushNamedAndRemoveUntil("/welcomeScreen", (_) => false);                    
+          Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false);                    
         }
         else{
           if (globals.user != null) {
             auth.isUserLoggedIn(globals.user)
             .then((_loggedIn){
               if (_loggedIn) {
-                Navigator.of(context).pushNamedAndRemoveUntil("/welcomeScreen", (_) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false);
               }
               else{
                 Navigator.pushNamedAndRemoveUntil(context, '/loginScreen', (_) => false);

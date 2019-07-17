@@ -37,6 +37,7 @@ class SyncPresenter {
       for (var i = 0; i < shopkeepers.length; i++) {
         Shopkeeper keeper = shopkeepers[i];
         bool synced = await api.syncShopkeeper(keeper);
+        // bool synced = true;
         if (synced) {
           keeper.synced = true;
           int id = await keeper.save();

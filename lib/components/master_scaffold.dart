@@ -30,54 +30,98 @@ class _MasterScaffoldState extends State<MasterScaffold> {
         bottom: widget.bottom,
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: <Widget>[
-            DrawerHeader(
-              padding: EdgeInsets.only(
-                bottom: 10.0,
-                right: 15.0
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: DrawerHeader(
+                    margin: EdgeInsets.zero,
+                    child: Image.asset("assets/tendero.PNG"),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Registrar tendero"),
+                    onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/registerShopkeeper", (_) => false),
+                  ),
+                  ListTile(
+                    title: Text("Sincronizar tenderos"),
+                    onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false),
+                  ),
+                  ListTile(
+                    title: Text("Cerrar Sesión"),
+                    onTap: () async {
+                      bool loggedOff = await Auth().logOffUser();
+                      if(loggedOff){
+                        Navigator.of(context).pushNamedAndRemoveUntil("/loginScreen", (_) => false);
+                      }
+                      else{
+                        print("Error al cerrar sesión");
+                        Navigator.pop(context);
+                        Builder(
+                          builder: (BuildContext ctx){
+                            globals.showSnackbar(ctx, "Ocurrió un error al tratar de cerrar sesión");
+                            return;
+                        });
+                      }
+                    },
+                  )
+                ],
               ),
-              child: Image.asset("assets/tendero.PNG"),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor
-              ),
             ),
-            ListTile(
-              title: Text("Inicio"),
-              onTap: (){
-                Navigator.pop(context);
-                Navigator.pushNamedAndRemoveUntil(context, "/welcomeScreen", (_) => false);
-              },
-            ),
-            ListTile(
-              title: Text("Registrar tendero"),
-              onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/registerShopkeeper", (_) => false),
-            ),
-            ListTile(
-              title: Text("Sincronizar tenderos"),
-              onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false),
-            ),
-            ListTile(
-              title: Text("Cerrar Sesión"),
-              onTap: () async {
-                bool loggedOff = await Auth().logOffUser();
-                if(loggedOff){
-                  Navigator.of(context).pushNamedAndRemoveUntil("/home", (_) => false);
-                }
-                else{
-                  print("Error al cerrar sesión");
-                  Navigator.pop(context);
-                  Builder(
-                    builder: (BuildContext ctx){
-                      globals.showSnackbar(ctx, "Ocurrió un error al tratar de cerrar sesión");
-                      return;
-                  });
-                }
-              },
+            Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Image.asset(
+                      "assets/wtc.PNG",
+                      scale: 4.0,
+                    ),
+                    Image.asset(
+                      "assets/pepsi.PNG",
+                      scale: 3.0,
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 40.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Image.asset(
+                        "assets/facebook.PNG",
+                        scale: 5.0,
+                      ),
+                      onPressed: () {},
+                    ),
+                    FlatButton(
+                      child: Image.asset(
+                        "assets/instagram.PNG",
+                        scale: 5.0,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 20.0,
+                )
+              ],
             )
           ],
-        ),
+        )
       ),
       body: widget.body,
       floatingActionButton: widget.floatingActionButton,
