@@ -240,20 +240,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           .then((val){
                             if (val != null) {
                               setState(() {
+                                // shopkeeper = Shopkeeper();
+                                //  _controllers = [
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                //   TextEditingController(),
+                                // ];
+                                // autovalidate = false;
+                                // formKey.currentState?.reset();
+                                // img = null;
                                 globals.showSnackbar(ctx, "Tendero guardado");
-                                shopkeeper = Shopkeeper();
-                                 _controllers = [
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                  TextEditingController(),
-                                ];
-                                autovalidate = false;
-                                formKey.currentState?.reset();
-                                img = null;
+                                Navigator.pop(context);
                               });
                             }
                             else {
