@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/models/User.dart';
 
-String title = "ExpoTenderos";
+String title = "EXPOTENDER@";
 User user;
 
 showSnackbar(BuildContext context, String msg) {

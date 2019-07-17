@@ -12,7 +12,7 @@
     
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="expotenderos_app"
+        android:label="Expo Tenderos"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
