@@ -6,9 +6,6 @@ ThemeData appTheme = new ThemeData(
   hintColor: Colors.black45,
   fontFamily: "Raleway",
   accentColor: secondaryColor,
-  inputDecorationTheme: InputDecorationTheme(
-    fillColor: secondaryColor,
-  ),
 );
 
 const Color primaryColor = Color.fromRGBO(0, 162, 79, 1.0);

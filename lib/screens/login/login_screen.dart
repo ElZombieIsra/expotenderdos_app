@@ -1,7 +1,8 @@
+import 'package:expotenderos_app/components/buttons/main_button.dart';
+import 'package:expotenderos_app/components/text_fields/login_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/globals.dart' as globals;
-import 'package:expotenderos_app/style.dart';
 import 'package:expotenderos_app/services/validations.dart';
 import 'package:expotenderos_app/screens/Login/login_presenter.dart';
 
@@ -30,39 +31,48 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Builder(
         builder: (BuildContext ctx) {
-          return SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: (screenSize.height / 5)*3,
+          return SafeArea(
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: SizedBox.expand(
                   child: Form(
                     key: formKey,
                     autovalidate: autovalidate,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        TextFormField(
-                          decoration: fieldDecoration(
-                            hint: 'Correo',
-                            label: true,
-                            suffixIcon: Icon(Icons.mail_outline),
+                        Text(
+                          "Ingresa tus datos para iniciar sesión",
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white
                           ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: validations.validateEmail,
-                          onSaved: (val) => user.email = val,
+                          textAlign: TextAlign.center,
                         ),
-                        TextFormField(
-                          decoration: fieldDecoration(
-                            hint: 'Contraseña',
-                            label: true,
-                            suffixIcon: Icon(Icons.lock_open),
-                          ),
-                          obscureText: true,
-                          validator: validations.validatePassword,
-                          onSaved: (val) => user.password = val,
+                        Container(
+                          height: 60.0,
                         ),
-                        RaisedButton(
-                          child: Text("Iniciar sesión"),
-                          onPressed: (){
+                        LoginTextField(
+                            label: "Correo",
+                            icon: Icon(Icons.mail_outline),
+                            validator: validations.validateEmail,
+                            onSaved: (val) => user.email = val,
+                            keyboardType: TextInputType.emailAddress,
+                        ),
+                        LoginTextField(
+                            label: "Contraseña",
+                            icon: Icon(Icons.lock_open),
+                            validator: validations.validatePassword,
+                            onSaved: (val) => user.password = val,
+                            obscureText: true,
+                        ),
+                        MainButton(
+                          text: "Iniciar sesión", 
+                          fun: (){
                             presenter.submit(
                               ctx: ctx,
                               form: formKey.currentState,
@@ -78,18 +88,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                         ),
-                        RaisedButton(
-                          child: Text("Borrar tabla (DEV only)"),
-                          onPressed: (){
-                            presenter.delete();
-                          },
-                        ),
+                        // RaisedButton(
+                        //   child: Text("Borrar tabla (DEV only)"),
+                        //   onPressed: (){
+                        //     presenter.delete();
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            )
           );
         },
       )

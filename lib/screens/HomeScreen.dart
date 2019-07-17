@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/components/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 
@@ -39,40 +40,27 @@ class HomeScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(globals.title),
-      ),
-      body: SafeArea(
-        child: Container(
-          color: Theme.of(context).primaryColor,
-          child: SizedBox.expand(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(40.0, 100.0, 40.0, 100.0),
-                  child: Image.asset(
-                    "assets/tendero.PNG",
-                    // height: screenSize.height / 2.5,
-                    // width: screenSize.width / 2,
-                  ),
+      body: Container(
+        color: Theme.of(context).primaryColor,
+        child: SizedBox.expand(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(40.0, 100.0, 40.0, 100.0),
+                child: Image.asset(
+                  "assets/tendero.PNG",
+                  // height: screenSize.height / 2.5,
+                  // width: screenSize.width / 2,
                 ),
-                RaisedButton(
-                  child: Text(
-                    "Comenzar",
-                    style: TextStyle(
-                      fontSize: 16.0
-                    ),
-                  ),
-                  padding: EdgeInsets.all(15.0),
-                  onPressed: handleButton,
-                  color: Theme.of(context).accentColor,
-                  textColor: Colors.white,
-                )
-              ],
-            )
-          ),
+              ),
+              MainButton(
+                text: "Comenzar",
+                fun: handleButton,
+              )
+            ],
+          )
         ),
-      )
+      ),
     );
   }
 

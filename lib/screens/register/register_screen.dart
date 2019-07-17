@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/components/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/components/master_scaffold.dart';
@@ -197,9 +198,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     );
                   }
-                  return RaisedButton(
-                    child: Text("Tomar foto"),
-                    onPressed: () {
+                  return MainButton(
+                    text: "Tomar foto",
+                    fun: () {
                       presenter.getPicture()
                       .then((pic) => setState(() {
                         if (pic != null) {
@@ -222,9 +223,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ListTile(
               title: Builder(
                 builder: (BuildContext ctx) {
-                  return RaisedButton(
-                    child: Text("Guardar"),
-                    onPressed: () {
+                  return MainButton(
+                    text: "Guardar",
+                    fun: () {
                       presenter.submit(
                         form: formKey,
                         shopkeeper: shopkeeper,

@@ -34,13 +34,11 @@ class _MasterScaffoldState extends State<MasterScaffold> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text(
-                "${widget.title ?? globals.title}",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0
-                ),
+              padding: EdgeInsets.only(
+                bottom: 10.0,
+                right: 15.0
               ),
+              child: Image.asset("assets/tendero.PNG"),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor
               ),
