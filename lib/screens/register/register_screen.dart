@@ -1,7 +1,6 @@
 import 'package:expotenderos_app/components/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
-import 'package:expotenderos_app/components/master_scaffold.dart';
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:expotenderos_app/services/validations.dart';
 import 'package:expotenderos_app/style.dart';

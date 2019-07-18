@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    ScrollController _scrollController = ScrollController();
+    // ScrollController _scrollController = ScrollController();
     final Size screenSize = MediaQuery.of(context).size;
 
     // Middleware that redirects if someone is logged in
