@@ -7,6 +7,8 @@ import 'package:flutter/scheduler.dart';
 import 'sync_presenter.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 
+TabController _controller;
+
 class SyncScreen extends StatefulWidget {
   @override
   _SyncScreenState createState() => _SyncScreenState();
@@ -14,7 +16,6 @@ class SyncScreen extends StatefulWidget {
 
 class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateMixin {
 
-  TabController _controller;
 
   @override
   void initState() {
@@ -68,6 +69,9 @@ class ShopkeepersView extends StatefulWidget {
 }
 
 class _ShopkeepersViewState extends State<ShopkeepersView> {
+
+  SyncPresenter presenter = SyncPresenter();
+
   @override
   Widget build(BuildContext context) {
     SchedulerBinding.instance.endOfFrame.then((_) {
@@ -88,6 +92,16 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
                 title: Text("${keeper.shop.name}"),
                 subtitle: Text("${keeper.email}"),
                 trailing: Text("${keeper.code}"),
+                onLongPress: () => presenter.syncShopkeeper(keeper)
+                .then((synced) {
+                  print(synced);
+                  if (synced) {
+                    setState(() {
+                      globals.showSnackbar(context, "Tendero ${keeper.shop.name} sincronizado");
+                    });
+                  }
+                }),
+                enabled: !widget.synced,
               );
             },
           );
@@ -143,6 +157,7 @@ class _FloatingButtonsState extends State<FloatingButtons> {
                   .then((synced) {
                     if (synced) {
                       setState(() {
+                        _controller.animateTo(1);
                         globals.showSnackbar(context, "Tenderos sincronizados");
                       });
                     }

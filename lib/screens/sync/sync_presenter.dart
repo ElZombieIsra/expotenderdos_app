@@ -6,6 +6,8 @@ class SyncPresenter {
 
   SyncPresenter();
 
+  ExpoTenderosApi _api = ExpoTenderosApi();
+
   /// Get keepers from database
   /// 
   /// When [synced] is true gets all syncronized shopkeepers.
@@ -30,23 +32,40 @@ class SyncPresenter {
   }
 
   Future<bool> syncShopkeepers() async {
-    ExpoTenderosApi api = ExpoTenderosApi();
     try {
       List<Shopkeeper> shopkeepers = await this.getKeepers(false);
-      bool tmp = false;
+      bool tmp = true;
       for (var i = 0; i < shopkeepers.length; i++) {
         Shopkeeper keeper = shopkeepers[i];
-        bool synced = await api.syncShopkeeper(keeper);
+        bool synced = await _api.syncShopkeeper(keeper);
         // bool synced = true;
         if (synced) {
           keeper.synced = true;
           int id = await keeper.save();
-          if (id != null) tmp = true;
+          if (id == null) {
+            tmp = false;
+            break;
+          }
         }
       }
       return tmp;
     } catch (e) {
       print("Api error");
+      return false;
+    }
+  }
+
+  Future<bool> syncShopkeeper(Shopkeeper keeper) async {
+    try {
+      bool synced = await _api.syncShopkeeper(keeper);
+      // bool synced = true;
+      if (!synced) return false;
+
+      keeper.synced = true;
+      await keeper.save();
+      return true;
+    } catch (e) {
+      print(e);
       return false;
     }
   }

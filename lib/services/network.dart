@@ -21,15 +21,18 @@ class NetworkService {
   }
 
   Future<dynamic> post(String url, {Map headers, body, encoding}) async {
-    http.post(Uri.encodeFull(url), body: jsonEncode(body), headers: headers, encoding: encoding)
-    .then((http.Response response) {
-      final String res = response.body;
-      final int statusCode = response.statusCode;
-      print(statusCode);
-      if (statusCode < 200 || statusCode > 400 || statusCode == 301) {
-        throw Exception("Error while fetching data");
-      }
-      return _decoder.convert(res);
-    });
+    http.Response response = await http.post(
+      Uri.encodeFull(url), 
+      body: jsonEncode(body), 
+      headers: headers, 
+      encoding: encoding
+    );
+    final String res = response.body;
+    final int statusCode = response.statusCode;
+    print(statusCode);
+    if (statusCode < 200 || statusCode > 400 || statusCode == 301) {
+      throw Exception("Error while fetching data");
+    }
+    return _decoder.convert(res);
   }
 }

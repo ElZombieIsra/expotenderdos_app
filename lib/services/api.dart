@@ -34,7 +34,7 @@ class ExpoTenderosApi {
           "shopkeeper": keeper.toMap(),
         }
       );
-      if (res) {
+      if (res["id"] != null) {
         return true; 
       }
       return false;
