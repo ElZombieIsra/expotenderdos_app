@@ -4,7 +4,24 @@
             "id": 1,
             "name": "Israel",
             "email": "a@a.am",
-            "password": "123"
+            "password": "123",
+            "token": "gjhasdhoasdasgdhalskhdkajgsd87918723"
+        }
+    ],
+    "shopkeepers": [
+        {
+            "id": 1,
+            "type": 0,
+            "name": "Juan",
+            "email": "test@test.ts",
+            "phone": "5544661120",
+            "gender": 0,
+            "shop_name": "Doña pelos",
+            "shop_address": "Mi casa",
+            "shop_picture": "base64:asdasdasd",
+            "shop_location": "-12.444444, 94.1231232",
+            "code": "000000",
+            "privacy": true
         }
     ]
 }
