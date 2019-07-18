@@ -3,6 +3,7 @@ import 'package:expotenderos_app/models/User.dart';
 
 import 'package:expotenderos_app/services/auth.dart';
 import 'package:expotenderos_app/services/database.dart';
+import 'package:flutter/widgets.dart';
 
 class LoginPresenter {
 
@@ -11,19 +12,23 @@ class LoginPresenter {
 
   LoginPresenter();
 
-  Future<User> submit({ctx, user, form}) async {
+  Future<User> submit({
+    BuildContext ctx, 
+    User user, 
+    form
+  }) async {
     if (!form.validate()){
       return null;
     }
     try {
       form.save();
-      // if (user.email == 'a@a.am' && user.password == '123') {
+      // if (user.username == 'user' && user.password == '123') {
       //   user.id = await logUser(user);
       //   user.loggedIn = true;
       //   return user;
       // }
       
-      User newUser = await auth.logInUser(user.email, user.password);
+      User newUser = await auth.logInUser(user.username, user.password);
       return newUser;
     } catch (e) {
       globals.showSnackbar(ctx, 'Datos incorrectos');

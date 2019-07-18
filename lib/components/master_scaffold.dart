@@ -51,7 +51,7 @@ class _MasterScaffoldState extends State<MasterScaffold> {
                 children: <Widget>[
                   ListTile(
                     title: Text(
-                      globals.user.email,
+                      globals.user.username,
                       style: TextStyle(
                         fontSize: 25.0,
                       ),

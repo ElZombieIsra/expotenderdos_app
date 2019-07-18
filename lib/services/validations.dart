@@ -57,4 +57,12 @@ class Validations{
       return 'Porfavor ingrese sólo caracteres alfanuméricos.';
     return null;
   }
+
+  String validateUsername(String val) {
+    if (val.isEmpty) return 'Ingrese su usuario';
+    final RegExp nameExp = new RegExp(r'^[A-za-zñÑ \d]+$');
+    if (!nameExp.hasMatch(val))
+      return 'Porfavor ingrese sólo caracteres alfanuméricos.';
+    return null;
+  }
 }

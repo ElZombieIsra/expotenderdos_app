@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:expotenderos_app/models/Shopkeeper.dart';
@@ -31,9 +30,6 @@ class RegisterPresenter {
     shopkeeper.shop.address = controllers[5].text;
     // shopkeeper.shop.picture = "asdasd";
 
-    // File imgFile = File(shopkeeper.shop.picture);
-    // List<int> bytes = await imgFile.readAsBytes();
-    // String base64 = base64Encode(bytes);
     // print(base64.length);
 
     shopkeeper.shop.location = await getCoordinates();

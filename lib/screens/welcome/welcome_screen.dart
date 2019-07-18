@@ -14,7 +14,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return MasterScaffold(
       Container(
         child: Center(
-          child: Text("Bienvenido ${globals.user.id} , ${globals.user.email}"),
+          child: Text("Bienvenido ${globals.user.id} , ${globals.user.username}"),
         ),
       )
     );

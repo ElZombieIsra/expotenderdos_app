@@ -44,11 +44,11 @@ class Auth {
   /// 
   /// If the user exists remotely but not locally, creates a local record of the user
   /// so the user doesn't needs to use connection to log in again.
-  Future<User> logInUser(String email, String password) async {
+  Future<User> logInUser(String username, String password) async {
 
     // Verifies there's a local record of the user
     User localUser = User();
-    localUser.email = email;
+    localUser.username = username;
     localUser.password = password;
     localUser = await localUser.getRecord();
 
@@ -60,7 +60,7 @@ class Auth {
     }
 
     // Reachs the API for the user
-    var response = await _api.login(email, password);
+    var response = await _api.login(username, password);
     User user = User.map(response);
 
     // Logs him in if exists in the API and creates a local record of the user

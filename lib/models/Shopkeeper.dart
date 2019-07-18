@@ -4,6 +4,7 @@ class Shopkeeper{
 
   final String tableName = "Shopkeepers";
   int id;
+  int idServer;
   final List types = ["Dueño", "Trabajador"];
   int type;
   String name;
@@ -25,6 +26,7 @@ class Shopkeeper{
 
   Shopkeeper.map(dynamic obj) {
     this.id = obj["id"];
+    this.idServer = obj["id_server"];
     this.type = obj["type"];
     this.name = obj["name"];
     this.email = obj["email"];
@@ -53,10 +55,25 @@ class Shopkeeper{
     this.synced = obj["synced"] == "1" ? true : false;
   }
 
+  Future<Shopkeeper> getKeeper(int id) async {
+
+    DatabaseHelper db = DatabaseHelper();
+    var client = await db.db;
+
+    List<Map<String, dynamic>> keeper = await client.query(
+      tableName, 
+      where: "id = ?",
+      whereArgs: [id],
+    );
+
+    return Shopkeeper.map(keeper[0]);
+  }
+
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();
 
     if(id != null) map["id"] = this.id;
+    map["id_server"] = this.idServer;
     map["type"] = this.type;
     map["name"] = this.name;
     map["email"] = this.email;

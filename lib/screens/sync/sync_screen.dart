@@ -71,8 +71,6 @@ class ShopkeepersView extends StatefulWidget {
 
 class _ShopkeepersViewState extends State<ShopkeepersView> {
 
-  SyncPresenter presenter = SyncPresenter();
-
   @override
   Widget build(BuildContext context) {
     SchedulerBinding.instance.endOfFrame.then((_) {
@@ -93,16 +91,6 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
                 title: Text("${keeper.shop.name}"),
                 subtitle: Text("${keeper.email}"),
                 trailing: Text("${keeper.code}"),
-                onLongPress: () => presenter.syncShopkeeper(keeper)
-                .then((synced) {
-                  print(synced);
-                  if (synced) {
-                    setState(() {
-                      globals.showSnackbar(context, "Tendero ${keeper.shop.name} sincronizado");
-                    });
-                  }
-                }),
-                enabled: !widget.synced,
               );
             },
           );

@@ -93,11 +93,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             //   height: 30.0,
                             // ),
                             LoginTextField(
-                                label: "Correo",
+                                label: "Usuario",
                                 icon: Icon(Icons.mail_outline),
-                                validator: validations.validateEmail,
-                                onSaved: (val) => user.email = val,
-                                keyboardType: TextInputType.emailAddress,
+                                validator: validations.validateUsername,
+                                onSaved: (val) => user.username = val,
+                                keyboardType: TextInputType.text,
                             ),
                             LoginTextField(
                                 label: "Contraseña",

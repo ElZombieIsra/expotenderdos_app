@@ -32,25 +32,20 @@ class SyncPresenter {
   }
 
   Future<bool> syncShopkeepers() async {
-    try {
       List<Shopkeeper> shopkeepers = await this.getKeepers(false);
-      bool tmp = true;
-      for (var i = 0; i < shopkeepers.length; i++) {
-        Shopkeeper keeper = shopkeepers[i];
-        bool synced = await _api.syncShopkeeper(keeper);
-        // bool synced = true;
-        if (synced) {
-          keeper.synced = true;
-          int id = await keeper.save();
-          if (id == null) {
-            tmp = false;
-            break;
-          }
-        }
+      var res = await _api.syncShopkeepers(shopkeepers);
+      print(res);
+      for (var i = 0; i < res.length; i++) {
+        Shopkeeper keeper = await Shopkeeper().getKeeper(res[i]["id"]);
+        keeper.idServer = res[i]["id_server"];
+        keeper.synced = true;
+        await keeper.save();
       }
-      return tmp;
+    try {
+
+      return true;
     } catch (e) {
-      print("Api error");
+      print(e);
       return false;
     }
   }

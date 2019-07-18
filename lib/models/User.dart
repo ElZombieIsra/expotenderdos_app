@@ -2,24 +2,23 @@ import 'package:expotenderos_app/services/database.dart';
 
 class User {
   int _id;
-  String _email;
+  String username;
   String _password;
   bool _loggedIn;
+  String token;
 
   User();
 
   User.map(dynamic obj) {
     this._id = obj["id"];
-    this._email = obj["email"];
+    this.username = obj["username"];
     this._password = obj["password"];
     this._loggedIn = obj["loggedIn"] is int ? (obj["loggedIn"] == 0 ? false : true) : obj["loggedIn"];
+    this.token = obj["token"];
   }
 
   int get id => _id;
   set id(int id) => this._id = id;
-
-  String get email => _email;
-  set email(String email) => this._email = email;
 
   String get password => _password;
   set password(String password) => this._password = password;
@@ -32,10 +31,13 @@ class User {
     if(_id != null){
       map["id"] = _id;
     }
-    map["email"] = _email;
+    map["username"] = this.username;
     map["password"] = _password;
     if (_loggedIn != null) {
       map["loggedIn"] = _loggedIn ? 1 : 0;
+    }
+    if (this.token != null) {
+      map["token"] = this.token;
     }
 
     return map;
@@ -47,8 +49,8 @@ class User {
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
     var res = await client.query("User", 
-      where: "email = ? AND password = ? ",
-      whereArgs: [this._email, this._password],
+      where: "username = ? AND password = ? ",
+      whereArgs: [this.username, this._password],
     );
 
     if(res.length != 0){
