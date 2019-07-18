@@ -49,13 +49,13 @@ class _MasterScaffoldState extends State<MasterScaffold> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  ListTile(
-                    title: Text("Registrar tendero"),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/registerShopkeeper");
-                    } 
-                  ),
+                  // ListTile(
+                  //   title: Text("Registrar tendero"),
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/registerShopkeeper");
+                  //   } 
+                  // ),
                   // ListTile(
                   //   title: Text("Sincronizar tenderos"),
                   //   onTap: () => Navigator.of(context).pushNamedAndRemoveUntil("/syncScreen", (_) => false),

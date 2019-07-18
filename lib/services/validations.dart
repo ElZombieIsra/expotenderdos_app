@@ -40,12 +40,9 @@ class Validations{
 
   String validateCode(String code) {
     if (code.isEmpty) return "Ingrese el código identificador del tendero";
-    try {
-      int.parse(code);
-      return null;
-    } catch (e) {
-      return "El código debe ser un número";
-    }
+    final RegExp codeExp = RegExp(r"[a-zA-Z\d]{6}");
+    if (!codeExp.hasMatch(code)) return "Código incorrecto";
+    return null;
   }
 
   String validateShopAddress(String val) {

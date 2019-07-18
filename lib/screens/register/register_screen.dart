@@ -33,8 +33,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MasterScaffold(
-      Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registrar tendero"),
+      ),
+      body: Form(
         key: formKey,
         autovalidate: autovalidate,
         child: ListView(
@@ -130,18 +133,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               title: Text(shopkeeper.genders[1]),
             ),
-            ListTile(
-              title: TextFormField(
-                controller: _controllers[3],
-                decoration: fieldDecoration(
-                  label: true,
-                  hint: "Edad (opcional)"
-                ),
-                keyboardType: TextInputType.number,
-                onSaved: (val) => val.isNotEmpty ? shopkeeper.age = int.parse(val) : 0,
-                validator: validations.validateAge,
-              ),
-            ),
+            // ListTile(
+            //   title: TextFormField(
+            //     controller: _controllers[3],
+            //     decoration: fieldDecoration(
+            //       label: true,
+            //       hint: "Edad (opcional)"
+            //     ),
+            //     keyboardType: TextInputType.number,
+            //     onSaved: (val) => val.isNotEmpty ? shopkeeper.age = int.parse(val) : 0,
+            //     validator: validations.validateAge,
+            //   ),
+            // ),
             Divider(),
             ListTile(
               title: Text("Datos de la tienda"),
@@ -170,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             ListTile(
               title: TextFormField(
+                textCapitalization: TextCapitalization.characters,
                 controller: _controllers[6],
                 decoration: fieldDecoration(
                   label: true,
@@ -181,7 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                 ),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 onSaved: (val) => shopkeeper.code = val,
                 validator: validations.validateCode,
               ),
@@ -253,7 +257,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 // autovalidate = false;
                                 // formKey.currentState?.reset();
                                 // img = null;
-                                globals.showSnackbar(ctx, "Tendero guardado");
+                                globals.msg.text = "Tendero guardado";
+                                // globals.showSnackbar(context, "Tendero guardado");
                                 Navigator.pop(context);
                               });
                             }
@@ -271,7 +276,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
-      title: "Registrar tendero"
     );
   }
 }

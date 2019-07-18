@@ -3,6 +3,7 @@ import 'package:expotenderos_app/style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/components/master_scaffold.dart';
+import 'package:flutter/scheduler.dart';
 import 'sync_presenter.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 
@@ -17,6 +18,7 @@ class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    globals.msg = globals.Msg();
     super.initState();
     _controller = TabController(vsync: this, length: 2);
   }
@@ -68,6 +70,11 @@ class ShopkeepersView extends StatefulWidget {
 class _ShopkeepersViewState extends State<ShopkeepersView> {
   @override
   Widget build(BuildContext context) {
+    SchedulerBinding.instance.endOfFrame.then((_) {
+      if (globals.msg != null && globals.msg.send) {
+        globals.msg.print(context);
+      }
+    });
     return FutureBuilder(
       future: SyncPresenter().getKeepers(widget.synced),
       builder: (BuildContext context, snapshot) {
@@ -79,7 +86,7 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
               return ListTile(
                 leading: Text("${keeper.id}"),
                 title: Text("${keeper.shop.name}"),
-                subtitle: Text("${keeper.shop.address}"),
+                subtitle: Text("${keeper.email}"),
                 trailing: Text("${keeper.code}"),
               );
             },
