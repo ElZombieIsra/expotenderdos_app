@@ -7,8 +7,6 @@ import 'package:flutter/scheduler.dart';
 import 'sync_presenter.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 
-TabController _controller;
-
 class SyncScreen extends StatefulWidget {
   @override
   _SyncScreenState createState() => _SyncScreenState();
@@ -16,6 +14,7 @@ class SyncScreen extends StatefulWidget {
 
 class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateMixin {
 
+  TabController _controller;
 
   @override
   void initState() {
@@ -51,7 +50,9 @@ class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateM
               Tab(text: "Sincronizados",),
             ],
           ),
-          floatingActionButton: FloatingButtons(),
+          floatingActionButton: FloatingButtons(
+            controller: _controller,
+          ),
         );
       },
     );
@@ -115,6 +116,13 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
 }
 
 class FloatingButtons extends StatefulWidget {
+
+  final TabController controller;
+
+  FloatingButtons({
+    this.controller,
+  });
+
   @override
   _FloatingButtonsState createState() => _FloatingButtonsState();
 }
@@ -157,7 +165,7 @@ class _FloatingButtonsState extends State<FloatingButtons> {
                   .then((synced) {
                     if (synced) {
                       setState(() {
-                        _controller.animateTo(1);
+                        widget.controller.animateTo(1);
                         globals.showSnackbar(context, "Tenderos sincronizados");
                       });
                     }
