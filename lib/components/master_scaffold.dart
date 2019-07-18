@@ -49,6 +49,15 @@ class _MasterScaffoldState extends State<MasterScaffold> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
+                  ListTile(
+                    title: Text(
+                      globals.user.email,
+                      style: TextStyle(
+                        fontSize: 25.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   // ListTile(
                   //   title: Text("Registrar tendero"),
                   //   onTap: () {

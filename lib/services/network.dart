@@ -11,15 +11,13 @@ class NetworkService {
   final JsonDecoder _decoder = JsonDecoder();
 
   Future<dynamic> get(String url) async {
-    http.get(url).then((http.Response response) {
-      final String res = response.body;
-      final int statusCode = response.statusCode;
-
-      if (statusCode < 200 || statusCode > 400) {
-        throw Exception("Error while fetching data");
-      }
-      return _decoder.convert(res);
-    });
+    http.Response response = await http.get(url);
+    final String res = response.body;
+    final int statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode > 400) {
+      throw Exception("Error while fetching data");
+    }
+    return _decoder.convert(res);
   }
 
   Future<dynamic> post(String url, {Map headers, body, encoding}) async {
