@@ -31,7 +31,7 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
-    await db.execute("CREATE TABLE User(id INTEGER NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, loggedIn INT, token TEXT)");
+    await db.execute("CREATE TABLE User(id INTEGER  PRIMARY KEY NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, loggedIn INT, token TEXT)");
     await db.execute("CREATE TABLE Shopkeepers(id INTEGER PRIMARY KEY NOT NULL, id_server INT, type INT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, phone TEXT NOT NULL, gender INT, age INT, shop_name TEXT NOT NULL, shop_address TEXT NOT NULL, shop_picture TEXT NOT NULL, shop_location TEXT NOT NULL, code TEXT NOT NULL, privacy INT NOT NULL, synced INT DEFAULT 0 NOT NULL)");
     print("Created tables");
   }

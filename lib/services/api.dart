@@ -8,12 +8,11 @@ import 'package:expotenderos_app/globals.dart' as globals;
 
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
-  // static const BASE_URL = "https://expotendero.mx/";
-  static const BASE_URL = "https://my-json-server.typicode.com/ElZombieIsra/expotenderdos_app";
-  static const LOGIN_URL = BASE_URL + "/users";
+  // static const BASE_URL = "http://192.168.100.237/tenderos/public/api";
+  static const BASE_URL = "https://expotendero.org/api";
+  static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
   // static const KEEPER_URL = "http://10.0.2.2:3000/shopkeepers";
-  // static const _API_KEY = "somerandomkey";
 
   Future<dynamic> login(String username, String password) async {
 
@@ -27,14 +26,17 @@ class ExpoTenderosApi {
 
     // if(res[0]["error"]) throw Exception(res["error_msg"]);
     
-    return res[0];
+    return res;
   }
 
   Future<bool> syncShopkeeper(Shopkeeper keeper) async {
       var res = await _netUtil.post(KEEPER_URL,
         body: {
-          "userId": globals.user.id,
+          "api_token": globals.user.token,
           "shopkeeper": keeper.toMap(),
+        },
+        headers: {
+          'Content-Type': 'application/json',
         }
       );
       if (res["id"] != null) {
@@ -53,7 +55,7 @@ class ExpoTenderosApi {
     }
     var res = await _netUtil.post(KEEPER_URL,
       body: {
-        "user_token": globals.user.token,
+        "api_token": globals.user.token,
         "shopkeepers": shopkeepers,
       }
     );

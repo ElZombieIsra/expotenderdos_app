@@ -21,6 +21,7 @@ class NetworkService {
   }
 
   Future<dynamic> post(String url, {Map headers, body, encoding}) async {
+    print(jsonEncode(body));
     http.Response response = await http.post(
       Uri.encodeFull(url), 
       body: jsonEncode(body), 
@@ -29,7 +30,7 @@ class NetworkService {
     );
     final String res = response.body;
     final int statusCode = response.statusCode;
-    print(statusCode);
+    print(res);
     if (statusCode < 200 || statusCode > 400 || statusCode == 301) {
       throw Exception("Error while fetching data");
     }
