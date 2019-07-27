@@ -32,17 +32,17 @@ class SyncPresenter {
   }
 
   Future<bool> syncShopkeepers() async {
+    // await Future.delayed(const Duration(seconds: 10));
+    try {
       List<Shopkeeper> shopkeepers = await this.getKeepers(false);
       var res = await _api.syncShopkeepers(shopkeepers);
-      print(res);
+      // print(res);
       for (var i = 0; i < res.length; i++) {
         Shopkeeper keeper = await Shopkeeper().getKeeper(res[i]["id"]);
         keeper.idServer = res[i]["id_server"];
         keeper.synced = true;
         await keeper.save();
       }
-    try {
-
       return true;
     } catch (e) {
       print(e);

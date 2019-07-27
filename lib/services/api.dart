@@ -8,8 +8,8 @@ import 'package:expotenderos_app/globals.dart' as globals;
 
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
-  // static const BASE_URL = "http://192.168.100.237/tenderos/public/api";
-  static const BASE_URL = "https://expotendero.org/api";
+  static const BASE_URL = "http://192.168.100.237/tenderos/public/api"; // TODO: Cambiar la url
+  // static const BASE_URL = "https://expotendero.org/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
   // static const KEEPER_URL = "http://10.0.2.2:3000/shopkeepers";
@@ -19,7 +19,7 @@ class ExpoTenderosApi {
     String url = "$LOGIN_URL?username=$username&password=$password";
 
     var res = await _netUtil.get(url);
-    print(res);
+    // print(res);
     if (res.length == 0) {
       throw Exception("No se encontró el usuario");
     }
@@ -59,7 +59,7 @@ class ExpoTenderosApi {
         "shopkeepers": shopkeepers,
       }
     );
-    print(res);
+    // print(res);
     if (res["shopkeepers"] == null) {
       throw Exception("No se pudieron sincronizar los tenderos");
     }

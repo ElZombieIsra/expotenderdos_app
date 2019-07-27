@@ -7,26 +7,19 @@ import 'package:flutter/scheduler.dart';
 import 'sync_presenter.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 
+Future future;
+
 class SyncScreen extends StatefulWidget {
   @override
   _SyncScreenState createState() => _SyncScreenState();
 }
 
-class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateMixin {
-
-  TabController _controller;
+class _SyncScreenState extends State<SyncScreen> {
 
   @override
   void initState() {
     globals.msg = globals.Msg();
     super.initState();
-    _controller = TabController(vsync: this, length: 2);
-  }
-
-  @override 
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -34,24 +27,14 @@ class _SyncScreenState extends State<SyncScreen> with SingleTickerProviderStateM
     return Builder(
       builder: (BuildContext ctx) {
         return MasterScaffold(
-          TabBarView(
-            controller: _controller,
-            children: [
-              ShopkeepersView(false),
-              ShopkeepersView(true),
-            ],
-          ),
+          ShopkeepersView(false),
           title: "Tenderos",
-          bottom: TabBar(
-            indicatorColor: secondaryColor,
-            controller: _controller,
-            tabs: [
-              Tab(text: "No sincronizados",),
-              Tab(text: "Sincronizados",),
-            ],
-          ),
           floatingActionButton: FloatingButtons(
-            controller: _controller,
+            callback: (){
+              setState(() {
+                SyncPresenter().getKeepers(false);
+              });
+            },
           ),
         );
       },
@@ -73,9 +56,16 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
 
   @override
   Widget build(BuildContext context) {
+
+    // Executes the function when the screen finishes loading
     SchedulerBinding.instance.endOfFrame.then((_) {
       if (globals.msg != null && globals.msg.send) {
         globals.msg.print(context);
+        SchedulerBinding.instance.endOfFrame.then((_) {
+          setState(() {
+            future = SyncPresenter().getKeepers(false);
+          });
+        });
       }
     });
     return FutureBuilder(
@@ -105,19 +95,44 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
 
 class FloatingButtons extends StatefulWidget {
 
-  final TabController controller;
+  final Function callback;
 
   FloatingButtons({
-    this.controller,
+    this.callback,
   });
 
   @override
   _FloatingButtonsState createState() => _FloatingButtonsState();
 }
 
-class _FloatingButtonsState extends State<FloatingButtons> {
+class _FloatingButtonsState extends State<FloatingButtons> with SingleTickerProviderStateMixin {
 
+  Animation<double> animation;
+  AnimationController controller;
   SyncPresenter presenter = SyncPresenter();
+  bool sentAlert = false;
+
+  @override
+  void initState() {
+
+    future = presenter.getKeepers(false);
+
+    super.initState();
+
+    controller = AnimationController(
+      duration: const Duration(
+        seconds: 60
+      ),
+      vsync: this,
+    );
+
+    animation = Tween<double>(
+      begin: 60,
+      end: 0,
+    ).animate(controller);
+    controller.repeat();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,33 +152,68 @@ class _FloatingButtonsState extends State<FloatingButtons> {
           width: 0.0,
         ),
         FutureBuilder(
-          future: presenter.getKeepers(false),
+          future: future,
           builder: (BuildContext ctx, snap) {
+
+            future = presenter.getKeepers(false);
+
+            Widget child;
+
+            if (snap.connectionState != ConnectionState.done) {
+              // print('active');
+              child = RotationTransition(
+                child: Icon(Icons.sync),
+                turns: animation,
+              );
+            }
+            else {
+              if (snap.hasData && (snap.data == true || snap.data == false)) {
+
+                // Updates the future when state of the widget is finished
+                SchedulerBinding.instance.endOfFrame.then((_) {
+                  setState(() {
+                    future = presenter.getKeepers(false);       
+                  });
+                  if (snap.data) widget.callback();
+
+                  // Show the alert when the state is finished
+                  SchedulerBinding.instance.endOfFrame.then((_) {
+                    globals.showSnackbar(context, snap.data ? "Tenderos sincronizados" : "Ocurrió un error al sincronizar");                    
+                  });
+                });
+              }
+              else {
+                child = Icon(
+                  snap.hasData && snap.data.length > 0 
+                  ? Icons.sync 
+                  : Icons.sync_disabled
+                );
+              }
+            }
+
             return FloatingActionButton(
               heroTag: "0",
               backgroundColor: secondaryColor,
-              child: Icon(
-                snap.hasData && snap.data.length > 0 
-                ? Icons.sync 
-                : Icons.sync_disabled
-              ),
+              child: child,
               onPressed: () {
+                if (snap.connectionState != ConnectionState.done) {
+                  if (!sentAlert){
+                    globals.showSnackbar(context, "Ya se están sincronizando");                  
+                    sentAlert = true;
+                  } 
+                  return;
+                }
+                sentAlert = false;
+                
                 if (snap.hasData && snap.data.length > 0) {
-                  presenter.syncShopkeepers()
-                  .then((synced) {
-                    if (synced) {
-                      setState(() {
-                        widget.controller.animateTo(1);
-                        globals.showSnackbar(context, "Tenderos sincronizados");
-                      });
-                    }
-                    else{
-                      globals.showSnackbar(context, "Ocurrió un error al sincronizar");
-                    }
+                  setState(() {
+                    future = presenter.syncShopkeepers();
                   });
                 }
                 else {
-                  globals.showSnackbar(context, "No hay tenderos para sincronizar");
+                  setState(() {
+                    globals.showSnackbar(context, "No hay tenderos para sincronizar");
+                  });
                 }
               },
             );

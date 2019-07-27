@@ -113,7 +113,7 @@ class Shopkeeper{
     }
     else {
       try {
-        print(this.toMap());
+        // print(this.toMap());
         int id = await client.insert(tableName, this.toMap());
         return id;
       } catch (e) {
