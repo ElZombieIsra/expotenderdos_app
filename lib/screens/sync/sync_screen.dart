@@ -135,6 +135,12 @@ class _FloatingButtonsState extends State<FloatingButtons> with SingleTickerProv
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();    
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,

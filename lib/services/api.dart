@@ -12,6 +12,7 @@ class ExpoTenderosApi {
   // static const BASE_URL = "https://expotendero.org/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
+  static const ACTIVITY_URL = BASE_URL + "/activity";
   // static const KEEPER_URL = "http://10.0.2.2:3000/shopkeepers";
 
   Future<dynamic> login(String username, String password) async {
@@ -65,4 +66,16 @@ class ExpoTenderosApi {
     }
     return res["shopkeepers"];
   } 
+
+  Future syncActivities() async {
+
+    var res = await _netUtil.get(ACTIVITY_URL);
+
+    if (res.length == 0) {
+      throw Exception("Error while reaching the API");
+    }
+
+    return res;
+
+  }
 }

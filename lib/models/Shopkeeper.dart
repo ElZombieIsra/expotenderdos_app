@@ -35,7 +35,7 @@ class Shopkeeper{
       try {
         this.gender = int.parse(obj["gender"]);
       } catch (e) {
-        // print(e);
+        print(e);
       }
       this.gender = obj["gender"];
     }
@@ -43,7 +43,7 @@ class Shopkeeper{
       try {
         this.age = obj["age"];
       } catch (e) {
-        // print(e);
+        print(e);
       }  
       this.age = obj["age"];
     }

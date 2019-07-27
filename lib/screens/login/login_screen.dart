@@ -127,12 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),
-                            // RaisedButton(
-                            //   child: Text("Borrar tabla (DEV only)"),
-                            //   onPressed: (){
-                            //     presenter.delete();
-                            //   },
-                            // ),
+                            RaisedButton(
+                              child: Text("Borrar tabla (DEV only)"),
+                              onPressed: (){
+                                presenter.delete(); // TODO: Remove button
+                              },
+                            ),
                           ],
                         ),
                       ),

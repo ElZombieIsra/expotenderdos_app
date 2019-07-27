@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/components/badge/main_badge.dart';
 import 'package:expotenderos_app/screens/sync/sync_presenter.dart';
 import 'package:flutter/material.dart';
 
@@ -64,28 +65,11 @@ class _MasterScaffoldState extends State<MasterScaffold> {
                     trailing: FutureBuilder(
                       future: SyncPresenter().getKeepers(true),
                       builder: (BuildContext ctx, snap) {
-                        if (snap.hasData) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).accentColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4.0),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Text(
-                                "${snap.data.length}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        return Text('');
+
+                        if (snap.hasData) return MainBadge("${snap.data.length}");
+
+                        return MainBadge("0");                        
+
                       },
                     ),
                   ),

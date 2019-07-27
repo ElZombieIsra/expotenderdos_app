@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/models/Activity.dart';
 import 'package:expotenderos_app/services/api.dart';
 import 'package:expotenderos_app/services/database.dart';
 
@@ -56,6 +57,9 @@ class Auth {
     if (localUser != null) {
       localUser.loggedIn = true;
       await localUser.save();
+
+      this.syncActivity();
+
       return localUser;
     }
 
@@ -68,6 +72,9 @@ class Auth {
       user.id = await db.saveUser(user);
       user.loggedIn = true;
       await user.save();
+
+      this.syncActivity();
+      
       return user;
     }
 
@@ -88,5 +95,36 @@ class Auth {
     }
 
     return true;
+  }
+
+  Future<bool> syncActivity() async {
+    
+    Activity act = Activity();
+    act.id = 1;
+    Activity first = await act.first();
+
+    try {
+
+      /// Gets all activities from the server
+      var res = await _api.syncActivities();
+
+      for (var activity in res['activities']) {
+
+        Activity _act = Activity.map(activity);
+        print(_act.id);
+
+        /// If the activities are already synchronized, 
+        /// updates them otherwise inserts them.
+        if (first != null) _act.save();
+        else _act.insert();
+
+      }
+
+    } catch (e) {
+      print(e);
+    } 
+
+    return true;
+
   }
 }
