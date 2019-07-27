@@ -20,6 +20,7 @@ class SyncPresenter {
       where: "synced = ?",
       whereArgs: [synced ? "1" : "0"],
     );
+    
     if (res.length > 0) {
       List<Shopkeeper> keepers = [];
       for (var keeper in res) {

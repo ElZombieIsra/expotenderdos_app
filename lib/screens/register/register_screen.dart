@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/components/activity_tile.dart';
 import 'package:expotenderos_app/components/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ import 'package:expotenderos_app/services/validations.dart';
 import 'package:expotenderos_app/style.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 import 'package:expotenderos_app/screens/register/register_presenter.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -189,6 +191,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: validations.validateCode,
               ),
             ),
+            Container(
+              height: 20.0,
+            ),
+            ListTile(
+              title: Builder(
+                builder: (BuildContext ctx) {
+                  return FutureBuilder(
+                    future: presenter.getCurrentActivities(shopkeeper.activities),
+                    builder: (BuildContext ctx, snap) {
+                      List<Widget> widgets = [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Conferencias:'),
+                            Icon(Icons.add),
+                          ],
+                        )
+                      ];
+                      if (snap.hasData) {
+                        if (snap.data.length > 0) {
+                          for (var activity in snap.data) {
+                            widgets.add(ActivityTile(activity));
+                          }
+                        }
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widgets,
+                      );
+                    },
+                  );
+                },
+              ),
+              onTap: () {
+                _settingModalBottomSheet(
+                  context, 
+                  shopkeeper, 
+                  presenter.getActivities(),
+                  (activities) => setState(() => shopkeeper.activities = activities)
+                );
+              },
+            ),
+            Container(
+              height: 20.0,
+            ),
             ListTile(
               title: Builder(
                 builder: (BuildContext ctx) {
@@ -243,19 +290,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           .then((val){
                             if (val != null) {
                               setState(() {
-                                // shopkeeper = Shopkeeper();
-                                //  _controllers = [
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                //   TextEditingController(),
-                                // ];
-                                // autovalidate = false;
-                                // formKey.currentState?.reset();
-                                // img = null;
                                 globals.msg.text = "Tendero guardado";
                                 // globals.showSnackbar(context, "Tendero guardado");
                                 Navigator.pop(context);
@@ -275,6 +309,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _settingModalBottomSheet(BuildContext context, Shopkeeper keeper, Future future, Function callback){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext ctx){
+        return FutureBuilder(
+          future: future,
+          builder: (BuildContext ct, snap) {
+            if (snap.hasData) {
+
+              return ListView.builder(
+                itemCount: snap.data.length,
+                itemBuilder: (BuildContext c, int i) {
+                  return Container(
+                    child: ActivityTile(snap.data[i],
+                      onTap: () {
+                        if (keeper.activities.length >= 2) {
+                          keeper.activities.removeAt(0);
+                        }
+                        setState(() {
+                          keeper.activities.add(snap.data[i].id);
+                          // callback(keeper.activities);
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                  );
+                },
+              );
+            }
+
+            return Text("Cargando...");
+          },
+        );
+      }
     );
   }
 }

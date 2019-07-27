@@ -45,13 +45,13 @@ class Activity {
     };
   }
 
-  Future<Activity> first() async {
+  Future<Activity> first({int id}) async {
 
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
     var res = await client.query(tableName,
       where: "id = ?",
-      whereArgs: [this.id],
+      whereArgs: [id ?? this.id],
     );
 
     if (res.length <= 0) {

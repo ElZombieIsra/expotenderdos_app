@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  height: screenSize.height - 100,
+                  height: screenSize.height - 10,
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.all(20.0),
@@ -127,12 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),
-                            RaisedButton(
-                              child: Text("Borrar tabla (DEV only)"),
-                              onPressed: (){
-                                presenter.delete(); // TODO: Remove button
-                              },
-                            ),
+                            // RaisedButton(
+                            //   child: Text("Borrar tabla (DEV only)"),
+                            //   onPressed: (){
+                            //     presenter.delete();
+                            //   },
+                            // ),
                           ],
                         ),
                       ),

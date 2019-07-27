@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/models/Activity.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -28,13 +29,11 @@ class RegisterPresenter {
 
     shopkeeper.shop.name = controllers[4].text;
     shopkeeper.shop.address = controllers[5].text;
-    // shopkeeper.shop.picture = "asdasd";
-
-    // print(base64.length);
 
     shopkeeper.shop.location = await getCoordinates();
 
     shopkeeper.code = controllers[6].text;
+    print(shopkeeper.activities[0]);
     int id = await shopkeeper.save();
     return id;
   }
@@ -75,6 +74,24 @@ class RegisterPresenter {
       return "${data.latitude}, ${data.longitude}";
     }
     return null;
+  }
+
+  Future<List<Activity>> getActivities() async {
+
+    return await Activity().get();
+
+  }
+
+  Future<List<Activity>> getCurrentActivities(List<int> ids) async {
+
+    List<Activity> activities = [];
+
+    for (var id in ids) {
+      activities.add(await Activity().first(id: id));
+    }
+
+    return activities;
+
   }
 
 }

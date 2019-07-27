@@ -21,7 +21,7 @@ class NetworkService {
   }
 
   Future<dynamic> post(String url, {Map headers, body, encoding}) async {
-    // print(jsonEncode(body));
+    print(jsonEncode(body));
     http.Response response = await http.post(
       Uri.encodeFull(url), 
       body: jsonEncode(body), 

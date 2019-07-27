@@ -17,6 +17,7 @@ class Shopkeeper{
   Shop shop;
 
   String code;
+  List<int> activities = [];
   bool privacy = false;
   bool synced = false;
 
@@ -33,7 +34,7 @@ class Shopkeeper{
     this.phone = obj["phone"];
     if (obj["gender"] != null) {
       try {
-        this.gender = int.parse(obj["gender"]);
+        this.gender = obj["gender"] is String ? int.parse(obj["gender"]) : obj["gender"];
       } catch (e) {
         print(e);
       }
@@ -49,8 +50,12 @@ class Shopkeeper{
     }
 
     this.shop = Shop.map(obj);
-
     this.code = obj["code"];
+    for (var id in obj["activities"].split(",")) {
+      this.activities.add(int.parse(id));
+    }
+    print(this.activities[0]);
+
     this.privacy = obj["privacy"] == "1" ? true : false;
     this.synced = obj["synced"] == "1" ? true : false;
   }
@@ -88,9 +93,20 @@ class Shopkeeper{
     // map["shop"] = shop.toMap();
 
     map["code"] = this.code;
+
+    map["activities"] = [];
+
+    map["activities"] = "";
+    for (var i = 0; i < this.activities.length; i++) {
+      map["activities"] += "${this.activities[i]}";
+      if (i != this.activities.length - 1) {
+        map["activities"] += ",";
+      }
+    }
+
     map["privacy"] = this.privacy ? 1 : 0;
     map["synced"] = this.synced ? 1 : 0;
-
+    print(map);
     return map;
   }
 
@@ -99,9 +115,11 @@ class Shopkeeper{
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
 
+    Map keeper = this.toMap();
+    // print(keeper);
     if (this.id != null) {
       try {
-        int id = await client.update(tableName, this.toMap(),
+        int id = await client.update(tableName, keeper,
           where: "id = ?",
           whereArgs: [this.id],
         );
@@ -114,7 +132,7 @@ class Shopkeeper{
     else {
       try {
         // print(this.toMap());
-        int id = await client.insert(tableName, this.toMap());
+        int id = await client.insert(tableName, keeper);
         return id;
       } catch (e) {
         print(e);

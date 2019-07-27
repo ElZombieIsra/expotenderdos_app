@@ -65,7 +65,6 @@ class _MasterScaffoldState extends State<MasterScaffold> {
                     trailing: FutureBuilder(
                       future: SyncPresenter().getKeepers(true),
                       builder: (BuildContext ctx, snap) {
-
                         if (snap.hasData) return MainBadge("${snap.data.length}");
 
                         return MainBadge("0");                        
