@@ -76,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _controllers[0],
                 decoration: fieldDecoration(
                   label: true,
-                  hint: "Nombre",
+                  hint: "Nombre completo",
                 ),
                 onSaved: (val) => shopkeeper.name = val,
                 validator: validations.validateName,
@@ -99,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _controllers[2],
                 decoration: fieldDecoration(
                   label: true,
-                  hint: "Número de teléfono",
+                  hint: "Número de teléfono (10 dígitos)",
                 ),
                 keyboardType: TextInputType.phone,
                 onSaved: (val) => shopkeeper.phone = val,
@@ -155,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _controllers[4],
                 decoration: fieldDecoration(
                   label: true,
-                  hint: "Nombre",
+                  hint: "Nombre de la tienda",
                 ),
                 onSaved: (val) => shopkeeper.shop.name = val,
                 validator: validations.validateShopName,
@@ -166,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _controllers[5],
                 decoration: fieldDecoration(
                   label: true,
-                  hint: "Dirección"
+                  hint: "Dirección completa"
                 ),
                 onSaved: (val) => shopkeeper.shop.address = val,
                 validator: validations.validateShopAddress,
@@ -178,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _controllers[6],
                 decoration: fieldDecoration(
                   label: true,
-                  hint: "Código",
+                  hint: "Código de gafete (QR)",
                   suffixIcon: IconButton(
                     icon: Icon(Icons.camera_alt),
                     onPressed: (){
@@ -266,7 +266,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ListTile(
               leading: Checkbox(
                 value: shopkeeper.privacy,
-                onChanged: (val) => setState(() => shopkeeper.privacy = val),
+                onChanged: (val) {
+
+                  /// Opens a modal to show the privacy agreement.
+                  globals.showInDialog(
+                    context, 
+                    Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a placerat elit. Quisque molestie velit tincidunt, placerat ipsum maximus, interdum orci. Nulla egestas sed nunc non eleifend. Nulla efficitur tristique orci consectetur semper. Donec eget ipsum bibendum, sagittis tortor vitae, accumsan elit. Aliquam vestibulum consectetur turpis, vel consectetur ligula posuere eu. Nam pharetra nulla vel sapien scelerisque, vitae vehicula risus dictum. Quisque feugiat neque nec quam viverra tempor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tristique cursus maximus. Donec suscipit nec metus id tempor. Aenean mollis consectetur elit, facilisis venenatis mauris consectetur ut. Suspendisse sit amet venenatis massa. Quisque tristique malesuada magna non porttitor. Donec consectetur felis vitae erat sagittis posuere. Donec in dignissim nisl, at rutrum velit.", 
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(height: 20.0,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            MainButton(
+                              text: "Declinar",
+                              fun: () {
+                                setState(() => shopkeeper.privacy = false);
+                                Navigator.pop(context);
+                              },
+                            ),
+                            MainButton(
+                              text: "Aceptar",
+                              color: Theme.of(context).primaryColor,
+                              fun: () {
+                                setState(() => shopkeeper.privacy = true);
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    title: "Acuerdo de privacidad",
+                  );
+                },
               ),
               title: Text("He leído y acepto el acuerdo de privacidad"),
             ),
@@ -326,6 +369,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 itemBuilder: (BuildContext c, int i) {
                   return Container(
                     child: ActivityTile(snap.data[i],
+
+                      /// If its already selected, disables the tile
+                      enabled: keeper.activities.indexOf(snap.data[i].id) == -1,
                       onTap: () {
                         if (keeper.activities.length >= 2) {
                           keeper.activities.removeAt(0);

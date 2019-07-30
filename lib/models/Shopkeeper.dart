@@ -54,7 +54,7 @@ class Shopkeeper{
     for (var id in obj["activities"].split(",")) {
       this.activities.add(int.parse(id));
     }
-    print(this.activities[0]);
+    // print(this.activities[0]);
 
     this.privacy = obj["privacy"] == "1" ? true : false;
     this.synced = obj["synced"] == "1" ? true : false;
@@ -106,7 +106,7 @@ class Shopkeeper{
 
     map["privacy"] = this.privacy ? 1 : 0;
     map["synced"] = this.synced ? 1 : 0;
-    print(map);
+    // print(map);
     return map;
   }
 

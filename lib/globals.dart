@@ -8,8 +8,28 @@ import 'package:expotenderos_app/models/User.dart';
 String title = "EXPOTENDER@";
 User user;
 
-showSnackbar(BuildContext context, String msg) {
+void showSnackbar(BuildContext context, String msg) {
   Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
+}
+
+void showInDialog(BuildContext context, Widget child, { String title = 'Alerta', }) {
+  showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      return AlertDialog(
+          title: Center(
+            child: Text(
+              "$title",
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          content: child,
+        );
+    }
+  );
 }
 
 Msg msg;

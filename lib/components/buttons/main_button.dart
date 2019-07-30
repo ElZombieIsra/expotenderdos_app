@@ -4,10 +4,12 @@ class MainButton extends StatefulWidget {
 
   final String text;
   final Function fun;
+  final Color color;
 
   MainButton({
     @required this.text,
-    this.fun
+    this.fun,
+    this.color
   });
 
   @override
@@ -26,7 +28,7 @@ class _MainButtonState extends State<MainButton> {
       ),
       padding: EdgeInsets.all(15.0),
       onPressed: widget.fun ?? (){},
-      color: Theme.of(context).accentColor,
+      color: widget.color ?? Theme.of(context).accentColor,
       textColor: Colors.white,
     );
   }
