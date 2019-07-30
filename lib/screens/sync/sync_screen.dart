@@ -94,21 +94,17 @@ class FloatingButtons extends StatefulWidget {
 
 class _FloatingButtonsState extends State<FloatingButtons> with SingleTickerProviderStateMixin {
 
-  Animation<double> animation;
-  AnimationController controller;
   SyncPresenter presenter = SyncPresenter();
   bool pressed = false;
 
   @override
   void initState() {
-
     super.initState();
 
   }
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();    
   }
 

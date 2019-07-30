@@ -2,6 +2,7 @@
 library globals;
 
 import 'package:flutter/material.dart';
+import 'package:flushbar/flushbar.dart';
 
 import 'package:expotenderos_app/models/User.dart';
 
@@ -9,7 +10,17 @@ String title = "EXPOTENDER@";
 User user;
 
 void showSnackbar(BuildContext context, String msg) {
-  Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  // Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  Flushbar(
+    message: msg,
+    duration:  Duration(seconds: 5),
+    flushbarStyle: FlushbarStyle.FLOATING,
+    borderRadius: 10.0,
+    borderColor: Colors.white,
+    borderWidth: 2.0,
+    margin: EdgeInsets.all(10.0),
+    backgroundColor: Theme.of(context).primaryColor,
+  )..show(context);
 }
 
 void showInDialog(BuildContext context, Widget child, { String title = 'Alerta', }) {
