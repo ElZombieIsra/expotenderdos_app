@@ -25,8 +25,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
   ];
-  bool autovalidate = false;
+  bool autovalidate = false, _referred = false;
   Validations validations = Validations();
   Shopkeeper shopkeeper = Shopkeeper();
   RegisterPresenter presenter = RegisterPresenter();
@@ -174,6 +177,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             ListTile(
               title: TextFormField(
+                controller: _controllers[7],
+                decoration: fieldDecoration(
+                  label: true,
+                  hint: "Código postal",
+                ),
+                keyboardType: TextInputType.number,
+                onSaved: (val) => shopkeeper.shop.postalCode = int.parse(val),
+                validator: validations.validatePostalCode,
+              ),
+            ),
+            ListTile(
+              title: TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 controller: _controllers[6],
                 decoration: fieldDecoration(
@@ -233,6 +248,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 );
               },
             ),
+            Builder(
+              builder: (BuildContext ctx) {
+                if (!_referred) {
+                  return ListTile(
+                    title: Column(
+                      children: <Widget>[
+                        Text("¿Quieres asistir con un invitado?"),
+                        FlatButton(
+                          child: Text("Regístralo ahora"),
+                          onPressed: () => setState(() => _referred = true),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: TextFormField(
+                        controller: _controllers[8],
+                        decoration: fieldDecoration(
+                          label: true,
+                          hint: "Nombre completo del acompañante",
+                        ),
+                        onSaved: (val) => shopkeeper.referredName = val,
+                        validator: validations.validateName,
+                      ),
+                    ),
+                    ListTile(
+                      title: TextFormField(
+                        textCapitalization: TextCapitalization.characters,
+                        controller: _controllers[9],
+                        decoration: fieldDecoration(
+                          label: true,
+                          hint: "Código de gafete (QR)",
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.camera_alt),
+                            onPressed: (){
+                              presenter.readQrCode().then((val) => _controllers[9].text = val);
+                            },
+                          ),
+                        ),
+                        keyboardType: TextInputType.text,
+                        onSaved: (val) => shopkeeper.referredCode = val,
+                        validator: validations.validateCode,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
             Container(
               height: 20.0,
             ),
@@ -277,7 +343,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: SingleChildScrollView(
                             child: Column(
                               children: <Widget>[
-                                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a placerat elit. Quisque molestie velit tincidunt, placerat ipsum maximus, interdum orci. Nulla egestas sed nunc non eleifend. Nulla efficitur tristique orci consectetur semper. Donec eget ipsum bibendum, sagittis tortor vitae, accumsan elit. Aliquam vestibulum consectetur turpis, vel consectetur ligula posuere eu. Nam pharetra nulla vel sapien scelerisque, vitae vehicula risus dictum. Quisque feugiat neque nec quam viverra tempor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tristique cursus maximus. Donec suscipit nec metus id tempor. Aenean mollis consectetur elit, facilisis venenatis mauris consectetur ut. Suspendisse sit amet venenatis massa. Quisque tristique malesuada magna non porttitor. Donec consectetur felis vitae erat sagittis posuere. Donec in dignissim nisl, at rutrum velit.", 
+                                Text("Aviso de privacidad para la protección de datos personales.\n\nEn términos de lo previsto en la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, la aportación que hagas de tus datos Personales a Gsfera S.A. de C.V. (Gsfera) la aceptación de estos Términos y Condiciones:\n\n1.- El presente Aviso tiene por objeto la protección de tus datos personales (tu nombre, tu número telefónico, el nombre de tu negocio (tienda), mediante su tratamiento legítimo, controlado e informado, a efecto de garantizar su privacidad, así como tu derecho a la autodeterminación informativa.\n\n2.- Conforme al artículo 3, fracción V, de la Ley, se entiende por Datos Personales: Cualquier información concerniente a una persona física identificada o identificable.\n\n3.- Gsfera, de conformidad a lo dispuesto por la fracción I del artículo 16 de la Ley, será el Responsable de tu información personal (Datos Personales). Gsfera hará uso de los datos únicamente para dar acceso a la “Expo Tendero” a realizarse el 06 de noviembre de 2019, así como para mantenerte al tanto de la información concerniente a Gsfera.\n\n4.- Al participar en el proceso de ingreso a la “Expo Tendero”, autorizas a Gsfera a utilizar y tratar de forma automatizada tus datos personales e información suministrados, los cuales formarán parte de nuestra base de datos con la finalidad de usarlos en forma enunciativa para identificarte, ubicarte, comunicarte, contactarte, enviarte información, actualizar nuestra base de datos y obtener estadísticas.\n\n6.- La temporalidad del manejo de tus Datos Personales será indefinida a partir de la fecha en que nos los proporciones.\n\n7.- Gsfera, como responsable del tratamiento de tus datos personales, está obligada a cumplir con los principios de licitud, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad tutelados en la Ley; por tal motivo con fundamento en los artículos 13 y 14 de la Ley, Gsfera se compromete a tratar tu información con normas de confidencialidad y seguridad administrativa.\n\n8.- En términos de lo establecido por el artículo 22 de la Ley, tienes derecho en cualquier momento a ejercer tus derechos de acceso, rectificación, cancelación y oposición al tratamiento de tus datos personales.\n\nEn caso de que requieras algún cambio deberás enviar un correo a ________________. En cumplimiento al artículo 29 de la Ley, dicha solicitud deberá contener los siguientes datos: a) Tu nombre y domicilio u otro medio para comunicarte la respuesta a tu solicitud; b) Los documentos que acrediten tu identidad o, en su caso, la representación legal de la persona que realiza la solicitud a tu nombre; c) La descripción clara y precisa de los datos personales respecto de los que buscas ejercer alguno de los derechos mencionados en el párrafo anterior, y d) Cualquier otro elemento o documento que facilite la localización de tus datos personales. En caso de solicitar la rectificación de datos personales, adicionalmente deberás indicar las modificaciones a realizarse y aportar la documentación que sustente tu petición. La respuesta a tu solicitud se te comunicará en un plazo de veinte días hábiles, contados desde la fecha en que se recibió, pudiendo ampliarse a veinte días más en los casos que así lo establezcan la Ley; a efecto de que de resultar procedente, se lleven a cabo las medidas adoptadas para cumplir con tu solicitud, mismas que se llevarán a cabo dentro de los quince días hábiles siguientes a la fecha en que se comunique la respuesta.\n\n9.- Te sugerimos conocer y analizar el contenido de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares pues pueden generarse cambios normativos a los que estamos sujetos.", 
                                   textAlign: TextAlign.justify,
                                 ),
                               ],

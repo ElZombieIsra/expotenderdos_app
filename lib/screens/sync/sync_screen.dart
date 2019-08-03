@@ -145,13 +145,16 @@ class _FloatingButtonsState extends State<FloatingButtons> with SingleTickerProv
                   pressed = true;
                   globals.showSnackbar(context, "Sincronizando");
                   presenter.syncShopkeepers().then((synced) {
-                    if (synced) {
-                      setState(() {
+                    setState(() {
+                      pressed = false;
+                      if (synced) {
                         globals.showSnackbar(context, "Tenderos sincronizados");
-                        pressed = false;
                         widget.callback();
-                      });
-                    }
+                      }
+                      else {
+                        globals.showSnackbar(context, "Ocurrió un error al sincronizar"); 
+                      }
+                    });
                   });
                 }
                 else {

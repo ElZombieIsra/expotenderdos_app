@@ -8,8 +8,8 @@ import 'package:expotenderos_app/globals.dart' as globals;
 
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
-  // static const BASE_URL = "http://192.168.100.237/tenderos/public/api";
-  static const BASE_URL = "https://expotendero.org/api";
+  static const BASE_URL = "http://192.168.100.237/tenderos/public/api";
+  // static const BASE_URL = "https://expotendero.org/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
   static const ACTIVITY_URL = BASE_URL + "/activity";

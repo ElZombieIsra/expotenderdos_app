@@ -16,6 +16,7 @@ class RegisterPresenter {
     if(!form.currentState.validate()) return "Rellene todos los campos";
     if(shopkeeper.type == null || shopkeeper.type < 0) return "Seleccione el tipo de tendero";
     if (!shopkeeper.privacy) return "Por favor acepte el acuerdo de privacidad";
+    if (shopkeeper.shop.picture == null) return "Agregue la fotografía de la tienda";
     form.currentState.save();
     return null;
   }
@@ -33,7 +34,11 @@ class RegisterPresenter {
     shopkeeper.shop.location = await getCoordinates();
 
     shopkeeper.code = controllers[6].text;
-    print(shopkeeper.activities[0]);
+    shopkeeper.shop.postalCode = int.parse(controllers[7].text);
+
+    if (controllers[8].text.isNotEmpty) shopkeeper.referredName = controllers[8].text;
+    if (controllers[9].text.isNotEmpty) shopkeeper.referredCode = controllers[9].text;
+    // print(shopkeeper.activities[0]);
     int id = await shopkeeper.save();
     return id;
   }

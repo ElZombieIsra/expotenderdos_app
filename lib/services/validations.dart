@@ -65,4 +65,12 @@ class Validations{
       return 'Porfavor ingrese sólo caracteres alfanuméricos.';
     return null;
   }
+
+  String validatePostalCode(String val) {
+    if (val.isEmpty) return 'Ingrese el código postal de la tienda';
+    final RegExp nameExp = new RegExp(r'^\d{4,5}$');
+    if (!nameExp.hasMatch(val))
+      return 'El código postal está en un formato incorrecto.';
+    return null;
+  }
 }

@@ -21,6 +21,9 @@ class Shopkeeper{
   bool privacy = false;
   bool synced = false;
 
+  String referredName;
+  String referredCode;
+
   Shopkeeper() {
     this.shop = Shop();
   }
@@ -58,6 +61,8 @@ class Shopkeeper{
 
     this.privacy = obj["privacy"] == "1" ? true : false;
     this.synced = obj["synced"] == "1" ? true : false;
+    this.referredName = obj["referred_name"];
+    this.referredCode = obj["referred_code"];
   }
 
   Future<Shopkeeper> getKeeper(int id) async {
@@ -88,6 +93,7 @@ class Shopkeeper{
 
     map["shop_name"] = this.shop.name;
     map["shop_address"] = this.shop.address;
+    map["shop_postal_code"] = this.shop.postalCode;
     map["shop_picture"] = this.shop.picture;
     map["shop_location"] = this.shop.location;
     // map["shop"] = shop.toMap();
@@ -106,6 +112,8 @@ class Shopkeeper{
 
     map["privacy"] = this.privacy ? 1 : 0;
     map["synced"] = this.synced ? 1 : 0;
+    map["referred_name"] = this.referredName;
+    map["referred_code"] = this.referredCode;
     // print(map);
     return map;
   }
@@ -148,6 +156,7 @@ class Shop {
   
   String name;
   String address;
+  int postalCode;
   String picture;
   String location;
 
@@ -156,6 +165,7 @@ class Shop {
   Shop.map(dynamic obj) {
     this.name = obj["shop_name"];
     this.address = obj["shop_address"];
+    this.postalCode = obj["shop_postal_code"];
     this.picture = obj["shop_picture"];
     this.location = obj["shop_location"];
   }
@@ -163,10 +173,11 @@ class Shop {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();
 
-    map["name"] = name;
-    map["address"] = address;
-    map["picture"] = picture;
-    map["location"] = location;
+    map["name"] = this.name;
+    map["address"] = this.address;
+    map["postal_code"] = this.postalCode;
+    map["picture"] = this.picture;
+    map["location"] = this.location;
 
     return map;
   }
