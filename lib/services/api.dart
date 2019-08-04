@@ -6,14 +6,14 @@ import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:expotenderos_app/services/network.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 
+import 'package:flutter/foundation.dart' as Foundation;
+
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
-  // static const BASE_URL = "http://192.168.100.237/tenderos/public/api";
-  static const BASE_URL = "https://expotendero.org/api";
+  static const BASE_URL = Foundation.kReleaseMode ? "https://expotendero.org/api" : "http://192.168.100.237/tenderos/public/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
   static const ACTIVITY_URL = BASE_URL + "/activity";
-  // static const KEEPER_URL = "http://10.0.2.2:3000/shopkeepers";
 
   Future<dynamic> login(String username, String password) async {
 
@@ -68,7 +68,7 @@ class ExpoTenderosApi {
     return res["shopkeepers"];
   } 
 
-  Future syncActivities() async {
+  Future syncCombos() async {
 
     var res = await _netUtil.get(ACTIVITY_URL);
 

@@ -1,51 +1,30 @@
 import 'package:expotenderos_app/services/database.dart';
 
-class Activity {
+class Combo {
   
-  final String tableName = "Activity";
+  final String tableName = "Combos";
 
   int id;
-  int capacitySite;
-  String activity;
-  String speaker;
-  String description;
-  int type;
-  int subtype;
-  int status;
-  String hourIni;
-  String hourFin;
+  String name;
+  String hour;
 
-  Activity();
+  Combo();
 
-  Activity.map(dynamic obj) {
+  Combo.map(dynamic obj) {
     this.id = obj["id"];
-    this.capacitySite = obj["capacity_site"];
-    this.activity = obj["activity"];
-    this.speaker = obj["speaker"];
-    this.description = obj["description"];
-    this.type = obj["type"];
-    this.subtype = obj["subtype"];
-    this.status = obj["status"];
-    this.hourIni = obj["hour_ini"];
-    this.hourFin = obj["hour_fin"];
+    this.name = obj["name"];
+    this.hour = obj["hour"];
   }
 
   Map<String, dynamic> toMap() {
     return {
       "id": this.id,
-      "capacity_site": this.capacitySite,
-      "activity": this.activity,
-      "speaker": this.speaker,
-      "description": this.description,
-      "type": this.type,
-      "subtype": this.subtype,
-      "status": this.status,
-      "hour_ini": this.hourIni,
-      "hour_fin": this.hourFin,
+      "name": this.name,
+      "hour": this.hour,
     };
   }
 
-  Future<Activity> first({int id}) async {
+  Future<Combo> first({int id}) async {
 
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
@@ -58,11 +37,11 @@ class Activity {
       return null;
     }
 
-    return Activity.map(res.first);
+    return Combo.map(res.first);
 
   }
 
-  Future<List<Activity>> get() async {
+  Future<List<Combo>> get() async {
 
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
@@ -72,20 +51,21 @@ class Activity {
       return null;
     }
     
-    List<Activity> activities = [];
-    for (var activity in res) {
-      activities.add(Activity.map(activity));
+    List<Combo> activities = [];
+    for (var combo in res) {
+      activities.add(Combo.map(combo));
     }
     return activities;
 
   }
 
-  // Updates the activity in the database
+  /// Saves the Combo in the database
   Future<bool> save() async {
 
     // Inserts the record in database if it doesn't exists
     if (await this.first() == null) return await this.insert();
-    
+
+    // Updates the record if exists
     DatabaseHelper db = DatabaseHelper();
     var client = await db.db;
 
@@ -100,7 +80,7 @@ class Activity {
 
   }
 
-  // Inserts the activity in the database
+  // Inserts the Combo in the database
   Future<bool> insert() async {
     
     DatabaseHelper db = DatabaseHelper();

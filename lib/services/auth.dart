@@ -1,4 +1,5 @@
 import 'package:expotenderos_app/models/Activity.dart';
+import 'package:expotenderos_app/models/Combo.dart';
 import 'package:expotenderos_app/services/api.dart';
 import 'package:expotenderos_app/services/database.dart';
 
@@ -58,7 +59,7 @@ class Auth {
       localUser.loggedIn = true;
       await localUser.save();
 
-      this.syncActivity();
+      this.syncCombos();
 
       return localUser;
     }
@@ -73,7 +74,7 @@ class Auth {
       user.loggedIn = true;
       await user.save();
 
-      this.syncActivity();
+      this.syncCombos();
       
       return user;
     }
@@ -97,26 +98,24 @@ class Auth {
     return true;
   }
 
-  Future<bool> syncActivity() async {
-    
-    Activity act = Activity();
-    act.id = 1;
-    Activity first = await act.first();
+  Future<bool> syncCombos() async {
 
     try {
 
       /// Gets all activities from the server
-      var res = await _api.syncActivities();
+      var res = await _api.syncCombos();
 
-      for (var activity in res['activities']) {
+      for (var combo in res['combos']) {
 
-        Activity _act = Activity.map(activity);
-        print(_act.id);
+        Combo _combo = Combo.map(combo);
+        await _combo.save();
 
-        /// If the activities are already synchronized, 
-        /// updates them otherwise inserts them.
-        if (first != null) _act.save();
-        else _act.insert();
+        for (var activity in combo["activities"]) {
+          
+          Activity _activity = Activity.map(activity);
+          await _activity.save();
+
+        }
 
       }
 
