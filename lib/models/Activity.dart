@@ -14,6 +14,7 @@ class Activity {
   int status;
   String hourIni;
   String hourFin;
+  int idCombo;
 
   Activity();
 
@@ -28,6 +29,7 @@ class Activity {
     this.status = obj["status"];
     this.hourIni = obj["hour_ini"];
     this.hourFin = obj["hour_fin"];
+    this.idCombo = obj["id_combo"];
   }
 
   Map<String, dynamic> toMap() {
@@ -42,6 +44,7 @@ class Activity {
       "status": this.status,
       "hour_ini": this.hourIni,
       "hour_fin": this.hourFin,
+      "id_combo": this.idCombo
     };
   }
 

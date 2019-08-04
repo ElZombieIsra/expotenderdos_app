@@ -30,7 +30,7 @@ class NetworkService {
     );
     final String res = response.body;
     final int statusCode = response.statusCode;
-    // print(res);
+    print(res);
     if (statusCode < 200 || statusCode > 400 || statusCode == 301) {
       throw Exception("Error while fetching data");
     }

@@ -1,3 +1,4 @@
+import 'package:expotenderos_app/models/Activity.dart';
 import 'package:expotenderos_app/services/database.dart';
 
 class Combo {
@@ -7,6 +8,7 @@ class Combo {
   int id;
   String name;
   String hour;
+  List<Activity> activities;
 
   Combo();
 
@@ -22,6 +24,28 @@ class Combo {
       "name": this.name,
       "hour": this.hour,
     };
+  }
+
+  Future<List<Activity>> getActivities() async {
+
+    var db = DatabaseHelper();
+    var client = await db.db;
+
+    var res = await client.query(Activity().tableName, 
+      where: "id_combo = ?",
+      whereArgs: [this.id],
+    );
+
+    if (res.length <= 0) return null;
+
+    List<Activity> activities = [];
+
+    for (var activity in res) activities.add(Activity.map(activity));
+
+    this.activities = activities;
+
+    return activities;
+
   }
 
   Future<Combo> first({int id}) async {
@@ -51,11 +75,11 @@ class Combo {
       return null;
     }
     
-    List<Combo> activities = [];
+    List<Combo> combos = [];
     for (var combo in res) {
-      activities.add(Combo.map(combo));
+      combos.add(Combo.map(combo));
     }
-    return activities;
+    return combos;
 
   }
 

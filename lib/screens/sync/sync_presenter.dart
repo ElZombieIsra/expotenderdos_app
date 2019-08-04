@@ -13,6 +13,7 @@ class SyncPresenter {
   /// When [synced] is true gets all syncronized shopkeepers.
   /// When [synced] is false gets all not syncronized shopkeepers.
   Future<List<Shopkeeper>> getKeepers(synced) async {
+
     DatabaseHelper database = DatabaseHelper();
     var client = await database.db;
 
@@ -30,6 +31,7 @@ class SyncPresenter {
     }
 
     return null;
+    
   }
 
   Future<bool> syncShopkeepers() async {

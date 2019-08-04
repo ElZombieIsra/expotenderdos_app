@@ -61,7 +61,7 @@ class ExpoTenderosApi {
         "shopkeepers": shopkeepers,
       }
     );
-    // print(res);
+    
     if (res["shopkeepers"] == null) {
       throw Exception("No se pudieron sincronizar los tenderos");
     }

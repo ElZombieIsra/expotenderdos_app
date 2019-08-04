@@ -1,5 +1,3 @@
-import 'package:expotenderos_app/components/activity_tile.dart';
-import 'package:expotenderos_app/components/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/models/Shopkeeper.dart';
@@ -8,6 +6,8 @@ import 'package:expotenderos_app/style.dart';
 import 'package:expotenderos_app/globals.dart' as globals;
 import 'package:expotenderos_app/screens/register/register_presenter.dart';
 
+import 'package:expotenderos_app/components/buttons/main_button.dart';
+import 'package:expotenderos_app/components/combo_tile.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -212,39 +212,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ListTile(
               title: Builder(
                 builder: (BuildContext ctx) {
+
                   return FutureBuilder(
-                    future: presenter.getCurrentActivities(shopkeeper.activities),
+                    future: presenter.getCurrentCombo(shopkeeper.combo),
                     builder: (BuildContext ctx, snap) {
-                      List<Widget> widgets = [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Conferencias:'),
-                            Icon(Icons.add),
-                          ],
-                        )
-                      ];
-                      if (snap.hasData) {
-                        if (snap.data.length > 0) {
-                          for (var activity in snap.data) {
-                            widgets.add(ActivityTile(activity));
-                          }
-                        }
-                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: widgets,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Conferencias:'),
+                              snap.hasData ? Icon(Icons.edit, size: 15.0,) : Icon(Icons.add),
+                            ],
+                          ),
+                          snap.hasData ? ComboTile(snap.data) : Container(),
+                        ],
                       );
                     },
                   );
+
                 },
               ),
               onTap: () {
                 _settingModalBottomSheet(
                   context, 
                   shopkeeper, 
-                  presenter.getActivities(),
-                  (activities) => setState(() => shopkeeper.activities = activities)
+                  presenter.getCombos(),
+                  (combo) => setState(() => shopkeeper.combo = combo)
                 );
               },
             ),
@@ -400,7 +395,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (val != null) {
                               setState(() {
                                 globals.msg.text = "Tendero guardado";
-                                // globals.showSnackbar(context, "Tendero guardado");
                                 Navigator.pop(context);
                               });
                             }
@@ -421,6 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  /// Combo selection panel
   void _settingModalBottomSheet(BuildContext context, Shopkeeper keeper, Future future, Function callback){
     showModalBottomSheet(
       context: context,
@@ -434,17 +429,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 itemCount: snap.data.length,
                 itemBuilder: (BuildContext c, int i) {
                   return Container(
-                    child: ActivityTile(snap.data[i],
+                    child: ComboTile(snap.data[i],
 
                       /// If its already selected, disables the tile
-                      enabled: keeper.activities.indexOf(snap.data[i].id) == -1,
+                      enabled: keeper.combo != snap.data[i].id,
                       onTap: () {
-                        if (keeper.activities.length >= 2) {
-                          keeper.activities.removeAt(0);
-                        }
                         setState(() {
-                          keeper.activities.add(snap.data[i].id);
-                          // callback(keeper.activities);
+                          keeper.combo = snap.data[i].id;
                           Navigator.pop(context);
                         });
                       },

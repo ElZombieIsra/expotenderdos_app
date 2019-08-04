@@ -1,4 +1,4 @@
-import 'package:expotenderos_app/models/Activity.dart';
+import 'package:expotenderos_app/models/Combo.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -81,21 +81,25 @@ class RegisterPresenter {
     return null;
   }
 
-  Future<List<Activity>> getActivities() async {
+  Future<List<Combo>> getCombos() async {
 
-    return await Activity().get();
+    List<Combo> combos = [];
+
+    for (var combo in await Combo().get()) { 
+      combo.activities = await combo.getActivities();
+      combos.add(combo);
+    }
+
+    print(combos[0].activities);
+    return combos;
 
   }
 
-  Future<List<Activity>> getCurrentActivities(List<int> ids) async {
+  Future<Combo> getCurrentCombo(int id) async {
 
-    List<Activity> activities = [];
-
-    for (var id in ids) {
-      activities.add(await Activity().first(id: id));
-    }
-
-    return activities;
+    Combo combo = await Combo().first(id: id);
+    await combo.getActivities();
+    return combo;
 
   }
 

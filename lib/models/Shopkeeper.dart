@@ -3,21 +3,22 @@ import 'package:expotenderos_app/services/database.dart';
 class Shopkeeper{
 
   final String tableName = "Shopkeepers";
+  final List types = ["Dueño", "Trabajador"];
+  final List genders = ["Hombre", "Mujer"];
+  
   int id;
   int idServer;
-  final List types = ["Dueño", "Trabajador"];
   int type;
   String name;
   String email;
   String phone;
-  final List genders = ["Hombre", "Mujer"];
   int gender;
   int age;
 
   Shop shop;
 
   String code;
-  List<int> activities = [];
+  int combo;
   bool privacy = false;
   bool synced = false;
 
@@ -51,14 +52,9 @@ class Shopkeeper{
       }  
       this.age = obj["age"];
     }
-
     this.shop = Shop.map(obj);
     this.code = obj["code"];
-    for (var id in obj["activities"].split(",")) {
-      this.activities.add(int.parse(id));
-    }
-    // print(this.activities[0]);
-
+    this.combo = obj["combo"];
     this.privacy = obj["privacy"] == "1" ? true : false;
     this.synced = obj["synced"] == "1" ? true : false;
     this.referredName = obj["referred_name"];
@@ -80,6 +76,7 @@ class Shopkeeper{
   }
 
   Map<String, dynamic> toMap() {
+
     Map<String, dynamic> map = Map<String, dynamic>();
 
     if(id != null) map["id"] = this.id;
@@ -96,26 +93,16 @@ class Shopkeeper{
     map["shop_postal_code"] = this.shop.postalCode;
     map["shop_picture"] = this.shop.picture;
     map["shop_location"] = this.shop.location;
-    // map["shop"] = shop.toMap();
 
     map["code"] = this.code;
-
-    map["activities"] = [];
-
-    map["activities"] = "";
-    for (var i = 0; i < this.activities.length; i++) {
-      map["activities"] += "${this.activities[i]}";
-      if (i != this.activities.length - 1) {
-        map["activities"] += ",";
-      }
-    }
-
+    map["combo"] = this.combo;
     map["privacy"] = this.privacy ? 1 : 0;
     map["synced"] = this.synced ? 1 : 0;
     map["referred_name"] = this.referredName;
     map["referred_code"] = this.referredCode;
-    // print(map);
+    
     return map;
+
   }
 
   Future<int> save() async {
@@ -124,7 +111,7 @@ class Shopkeeper{
     var client = await db.db;
 
     Map keeper = this.toMap();
-    // print(keeper);
+    print(keeper);
     if (this.id != null) {
       try {
         int id = await client.update(tableName, keeper,
