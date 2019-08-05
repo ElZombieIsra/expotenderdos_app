@@ -1,4 +1,4 @@
-package com.example.expotenderos_app;
+package com.cinteractivo_mx.expotenderos_app;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

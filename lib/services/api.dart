@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart' as Foundation;
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
   static const BASE_URL = Foundation.kReleaseMode ? "https://expotendero.org/api" : "http://192.168.100.237/tenderos/public/api";
+  // static const BASE_URL = "https://expotendero.org/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
   static const ACTIVITY_URL = BASE_URL + "/activity";
@@ -30,17 +31,17 @@ class ExpoTenderosApi {
     return res;
   }
 
-  Future<bool> syncShopkeeper(Shopkeeper keeper) async {
+  Future<dynamic> syncShopkeeper(Shopkeeper keeper) async {
       var res = await _netUtil.post(KEEPER_URL,
         body: {
           "api_token": globals.user.token,
-          "shopkeeper": keeper.toMap(),
+          "shopkeepers": [keeper.toMap()],
         },
         headers: {
           'Content-Type': 'application/json',
         }
       );
-      if (res["id"] != null) {
+      if (res["shopkeepers"][0] != null) {
         return true; 
       }
       return false;
@@ -50,9 +51,13 @@ class ExpoTenderosApi {
     // await Future.delayed(Duration(seconds: 20));
     List shopkeepers = [];
     for (var keeper in keepers) {
-      File imgFile = File(keeper.shop.picture);
-      List<int> bytes = await imgFile.readAsBytes();
-      keeper.shop.picture = base64Encode(bytes);
+      try {
+        File imgFile = File(keeper.shop.picture);
+        List<int> bytes = await imgFile.readAsBytes();
+        keeper.shop.picture = base64Encode(bytes);
+      } catch (e) {
+        print(e);
+      } 
       shopkeepers.add(keeper.toMap());
     }
     var res = await _netUtil.post(KEEPER_URL,

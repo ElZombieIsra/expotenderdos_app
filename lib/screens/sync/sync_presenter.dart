@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expotenderos_app/models/Shopkeeper.dart';
 import 'package:expotenderos_app/services/database.dart';
 import 'package:expotenderos_app/services/api.dart';
@@ -66,5 +68,41 @@ class SyncPresenter {
       print(e);
       return false;
     }
+  }
+
+  Future<bool> createDummy() async {
+
+    for (var i = 0; i < 52; i++) {
+      Shopkeeper keeper = Shopkeeper.map({
+        "type": 1,
+        "name": this._randomString(),
+        "email": "${this._randomString()}@as.as",
+        "phone": "5555555555",
+        "shop_name": this._randomString(),
+        "shop_address": this._randomString(),
+        "shop_postal_code": 15600,
+        "shop_picture": this._randomString(),
+        "shop_location": this._randomString(),
+        "combo": 1,
+        "code": this._randomString().toUpperCase(),
+        "privacy": "1",
+      });
+      await keeper.save();
+    } 
+
+    return true;
+
+  }
+
+  String _randomString() {
+    var rand = Random();
+    var codeUnits = List.generate(
+        6, 
+        (index){
+          return rand.nextInt(33)+89;
+        }
+    );
+    
+    return String.fromCharCodes(codeUnits);
   }
 }

@@ -48,6 +48,8 @@ class ShopkeepersView extends StatefulWidget {
 
 class _ShopkeepersViewState extends State<ShopkeepersView> {
 
+  SyncPresenter presenter = SyncPresenter();
+
   @override
   Widget build(BuildContext context) {
 
@@ -58,7 +60,7 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
       }
     });
     return FutureBuilder(
-      future: SyncPresenter().getKeepers(widget.synced),
+      future: presenter.getKeepers(widget.synced),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
@@ -70,6 +72,9 @@ class _ShopkeepersViewState extends State<ShopkeepersView> {
                 title: Text("${keeper.shop.name}"),
                 subtitle: Text("${keeper.email}"),
                 trailing: Text("${keeper.code}"),
+                onLongPress: () {
+                  presenter.syncShopkeeper(keeper);
+                },
               );
             },
           );
@@ -113,6 +118,17 @@ class _FloatingButtonsState extends State<FloatingButtons> with SingleTickerProv
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        // FloatingActionButton(
+        //   mini: true,
+        //   backgroundColor: secondaryColor,
+        //   child: Icon(Icons.edit),
+        //   onPressed: (){
+        //     presenter.createDummy().then((_) {
+        //       globals.showSnackbar(context, "Created dummys");
+        //       widget.callback();
+        //     });
+        //   },
+        // ),
         FloatingActionButton(
           mini: true,
           backgroundColor: secondaryColor,

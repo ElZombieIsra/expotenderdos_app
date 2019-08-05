@@ -1,12 +1,15 @@
 import 'package:expotenderos_app/components/badge/main_badge.dart';
 import 'package:expotenderos_app/screens/sync/sync_presenter.dart';
+
+
 import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/globals.dart' as globals;
 
 import 'package:expotenderos_app/services/auth.dart';
+import 'package:package_info/package_info.dart';
 
-class MasterScaffold extends StatefulWidget {
+class MasterScaffold extends StatefulWidget { 
 
   final Widget body;
   final String title;
@@ -30,6 +33,27 @@ class _MasterScaffoldState extends State<MasterScaffold> {
       appBar: AppBar(
         title: Text(widget.title ?? globals.title),
         bottom: widget.bottom,
+        actions: <Widget>[
+          FutureBuilder(
+            future: PackageInfo.fromPlatform(),
+            builder: (BuildContext ctx, snap) {
+              if (snap.hasData) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text("v${snap.data.version}",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        
+                      ),
+                    ),
+                  )
+                );
+              }
+              return Container();
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: Column(
