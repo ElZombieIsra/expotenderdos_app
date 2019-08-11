@@ -290,6 +290,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     //     validator: validations.validateCode,
                     //   ),
                     // ),
+                    ListTile(
+                      title: Text("Recuerda que tu invitado deberá pasar al módulo de registro por su pase de entrada",
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
                   ],
                 );
               },
