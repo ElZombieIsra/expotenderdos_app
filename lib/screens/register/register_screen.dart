@@ -271,25 +271,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: validations.validateName,
                       ),
                     ),
-                    ListTile(
-                      title: TextFormField(
-                        textCapitalization: TextCapitalization.characters,
-                        controller: _controllers[9],
-                        decoration: fieldDecoration(
-                          label: true,
-                          hint: "Código de gafete (QR)",
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.camera_alt),
-                            onPressed: (){
-                              presenter.readQrCode().then((val) => _controllers[9].text = val);
-                            },
-                          ),
-                        ),
-                        keyboardType: TextInputType.text,
-                        onSaved: (val) => shopkeeper.referredCode = val,
-                        validator: validations.validateCode,
-                      ),
-                    ),
+                    // ListTile(
+                    //   title: TextFormField(
+                    //     textCapitalization: TextCapitalization.characters,
+                    //     controller: _controllers[9],
+                    //     decoration: fieldDecoration(
+                    //       label: true,
+                    //       hint: "Código de gafete (QR)",
+                    //       suffixIcon: IconButton(
+                    //         icon: Icon(Icons.camera_alt),
+                    //         onPressed: (){
+                    //           presenter.readQrCode().then((val) => _controllers[9].text = val);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     keyboardType: TextInputType.text,
+                    //     onSaved: (val) => shopkeeper.referredCode = val,
+                    //     validator: validations.validateCode,
+                    //   ),
+                    // ),
                   ],
                 );
               },
@@ -383,6 +383,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       presenter.submit(
                         form: formKey,
                         shopkeeper: shopkeeper,
+                        controllers: _controllers,
                       )
                       .then((validate){
                         if (validate != null) {

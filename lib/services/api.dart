@@ -51,6 +51,7 @@ class ExpoTenderosApi {
     // await Future.delayed(Duration(seconds: 20));
     List shopkeepers = [];
     for (var keeper in keepers) {
+      print(keeper);
       try {
         File imgFile = File(keeper.shop.picture);
         List<int> bytes = await imgFile.readAsBytes();

@@ -1,14 +1,14 @@
 
 class Validations{
   String validateName(String value) {
-    if (value.isEmpty) return 'Nombre es un campo requerido.';
+    if (value == null || value.isEmpty) return 'Nombre es un campo requerido.';
     final RegExp nameExp = new RegExp(r'^[A-za-z ]+$');
-    if (!nameExp.hasMatch(value))
-      return 'Porfavor ingrese sólo caracteres alfanuméricos.';
+    if (!nameExp.hasMatch(value)) return 'Porfavor ingrese sólo caracteres alfanuméricos.';
     return null;
   }
 
   String validateEmail(String value) {
+    if (value == null) return 'Ingrese un correo';
     if (value.isEmpty) return 'Correo es un campo requerido.';
     final RegExp nameExp = new RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
     if (!nameExp.hasMatch(value)) return 'Correo electrónico inválido';
@@ -21,6 +21,7 @@ class Validations{
   }
 
   String validatePhoneNumber(String val){
+    if (val == null) return "Ingrese un número de teléfono";
     if (val.isEmpty) return "Ingrese el número de teléfono";
     final RegExp phoneExp = RegExp(r'^(\(\+?\d{2,3}\)[\*|\s|\-|\.]?(([\d][\*|\s|\-|\.]?){6})(([\d][\s|\-|\.]?){2})?|(\+?[\d][\s|\-|\.]?){8}(([\d][\s|\-|\.]?){2}(([\d][\s|\-|\.]?){2})?)?)$');
     if(!phoneExp.hasMatch(val)) return 'Número de telefóno inválido';

@@ -40,19 +40,52 @@ class SyncPresenter {
     // await Future.delayed(const Duration(seconds: 10));
     try {
       List<Shopkeeper> shopkeepers = await this.getKeepers(false);
-      var res = await _api.syncShopkeepers(shopkeepers);
-      // print(res);
-      for (var i = 0; i < res.length; i++) {
-        Shopkeeper keeper = await Shopkeeper().getKeeper(res[i]["id"]);
-        keeper.idServer = res[i]["id_server"];
-        keeper.synced = true;
-        await keeper.save();
+
+      int range = 10;
+      double numKeepers = shopkeepers.length / range;
+      int intNumKeepers = numKeepers.floor();
+
+      /// Syncs groups of 10 shopkeepers
+      if (intNumKeepers > 0) {
+        for (var i = 0; i < intNumKeepers; i++) {
+          print("saving group $i");
+          List<Shopkeeper> currentKeepers = new List(10);
+          currentKeepers.setRange(0, range, shopkeepers, i * range);
+          
+          await syncShopkeepersApi(currentKeepers);
+        }
       }
+
+      /// Syncs the rest
+      int mod = shopkeepers.length % 10;
+      if (mod != 0) {
+        List<Shopkeeper> tmpKeepers = [];
+        int numKeepersMod = mod;
+        print("saving rest");
+        for (var i = 0; i < numKeepersMod; i++) {
+          tmpKeepers.add(shopkeepers[(shopkeepers.length - 1) - i]);
+        }
+
+        await syncShopkeepersApi(tmpKeepers);
+      }
+      await Future.delayed(Duration(seconds: 2));
       return true;
     } catch (e) {
       print(e);
       return false;
     }
+  }
+
+  Future<bool> syncShopkeepersApi(List<Shopkeeper> keepers) async {
+    var res = await _api.syncShopkeepers(keepers);
+    print(res);
+    for (var i = 0; i < res.length; i++) {
+      Shopkeeper keeper = await Shopkeeper().getKeeper(res[i]["id"]);
+      keeper.idServer = res[i]["id_server"];
+      keeper.synced = true;
+      await keeper.save();
+    }
+    return true;
   }
 
   Future<bool> syncShopkeeper(Shopkeeper keeper) async {

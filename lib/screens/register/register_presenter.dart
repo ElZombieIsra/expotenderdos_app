@@ -1,4 +1,5 @@
 import 'package:expotenderos_app/models/Combo.dart';
+import 'package:expotenderos_app/services/validations.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -11,12 +12,17 @@ class RegisterPresenter {
 
   Future<String> submit({
     @required GlobalKey<FormState> form,
-    @required Shopkeeper shopkeeper
+    @required Shopkeeper shopkeeper,
+    @required List<TextEditingController> controllers,
   }) async {
+    Validations validations = Validations();
     if(!form.currentState.validate()) return "Rellene todos los campos";
     if(shopkeeper.type == null || shopkeeper.type < 0) return "Seleccione el tipo de tendero";
     if (!shopkeeper.privacy) return "Por favor acepte el acuerdo de privacidad";
     if (shopkeeper.shop.picture == null) return "Agregue la fotografía de la tienda";
+    if (validations.validateName(controllers[0].text) != null) return validations.validateName(controllers[0].text);
+    if (validations.validateEmail(controllers[1].text) != null) return validations.validateEmail(controllers[1].text);
+    if (validations.validatePhoneNumber(controllers[2].text) != null) return validations.validatePhoneNumber(controllers[2].text);
     form.currentState.save();
     return null;
   }
@@ -37,7 +43,7 @@ class RegisterPresenter {
     shopkeeper.shop.postalCode = int.parse(controllers[7].text);
 
     if (controllers[8].text.isNotEmpty) shopkeeper.referredName = controllers[8].text;
-    if (controllers[9].text.isNotEmpty) shopkeeper.referredCode = controllers[9].text;
+    // if (controllers[9].text.isNotEmpty) shopkeeper.referredCode = controllers[9].text;
     // print(shopkeeper.activities[0]);
     int id = await shopkeeper.save();
     return id;
