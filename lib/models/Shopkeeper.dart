@@ -111,7 +111,7 @@ class Shopkeeper{
     var client = await db.db;
 
     Map keeper = this.toMap();
-    print(keeper);
+    // print(keeper);
     if (this.id != null) {
       try {
         int id = await client.update(tableName, keeper,

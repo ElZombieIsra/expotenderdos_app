@@ -42,6 +42,7 @@ class Validations{
   String validateCode(String code) {
     if (code.isEmpty) return "Ingrese el código identificador del tendero";
     final RegExp codeExp = RegExp(r"[a-zA-Z\d]{6}");
+    if(code.length > 6 || code.length < 6) return "El código debe ser de 6 dígitos";
     if (!codeExp.hasMatch(code)) return "Código incorrecto";
     return null;
   }

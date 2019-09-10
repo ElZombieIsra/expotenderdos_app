@@ -17,9 +17,9 @@ class LoginPresenter {
     User user, 
     form
   }) async {
-    if (!form.validate()){
-      return null;
-    }
+    
+    if (!form.validate()) return null;
+    
     try {
       form.save();
       // if (user.username == 'user' && user.password == '123') {

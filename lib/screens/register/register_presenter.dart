@@ -20,9 +20,22 @@ class RegisterPresenter {
     if(shopkeeper.type == null || shopkeeper.type < 0) return "Seleccione el tipo de tendero";
     if (!shopkeeper.privacy) return "Por favor acepte el acuerdo de privacidad";
     if (shopkeeper.shop.picture == null) return "Agregue la fotografía de la tienda";
-    if (validations.validateName(controllers[0].text) != null) return validations.validateName(controllers[0].text);
-    if (validations.validateEmail(controllers[1].text) != null) return validations.validateEmail(controllers[1].text);
-    if (validations.validatePhoneNumber(controllers[2].text) != null) return validations.validatePhoneNumber(controllers[2].text);
+    String nameVal = validations.validateName(controllers[0].text); 
+    String emailVal = validations.validateEmail(controllers[1].text); 
+    String phoneVal = validations.validatePhoneNumber(controllers[2].text);
+    String storeNameVal = validations.validateShopName(controllers[4].text);
+    String storeAddressVal = validations.validateShopAddress(controllers[5].text);
+    String storePostalCodeVal = validations.validatePostalCode(controllers[7].text);
+    String codeVal = validations.validateCode(controllers[6].text);
+    String referredNameVal = validations.validateName(controllers[8].text);
+    if (nameVal != null) return nameVal;
+    if (emailVal != null) return emailVal;
+    if (phoneVal != null) return phoneVal;
+    if (storeNameVal != null) return storeNameVal;
+    if (storeAddressVal != null) return storeAddressVal;
+    if (storePostalCodeVal != null) return storePostalCodeVal;
+    if (codeVal != null) return codeVal;
+    if (referredNameVal != null) return referredNameVal;
     form.currentState.save();
     return null;
   }
@@ -96,7 +109,6 @@ class RegisterPresenter {
       combos.add(combo);
     }
 
-    print(combos[0].activities);
     return combos;
 
   }

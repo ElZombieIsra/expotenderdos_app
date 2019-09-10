@@ -8,6 +8,7 @@ import 'package:expotenderos_app/models/User.dart';
 
 String title = "EXPOTENDER@";
 User user;
+String kVersion;
 
 void showSnackbar(BuildContext context, String msg) {
   // Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));

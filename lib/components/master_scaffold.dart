@@ -34,14 +34,14 @@ class _MasterScaffoldState extends State<MasterScaffold> {
         title: Text(widget.title ?? globals.title),
         bottom: widget.bottom,
         actions: <Widget>[
-          FutureBuilder(
-            future: PackageInfo.fromPlatform(),
-            builder: (BuildContext ctx, snap) {
-              if (snap.hasData) {
+          Builder(
+            builder: (BuildContext ctx) {
+              
+              Widget versionContainer(text) {
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.0),
-                    child: Text("v${snap.data.version}",
+                    child: Text("v$text",
                       style: TextStyle(
                         fontSize: 20.0,
                         
@@ -50,9 +50,20 @@ class _MasterScaffoldState extends State<MasterScaffold> {
                   )
                 );
               }
-              return Container();
-            },
-          ),
+
+              if (globals.kVersion != null) return versionContainer(globals.kVersion);
+              return FutureBuilder(
+                future: PackageInfo.fromPlatform(),
+                builder: (BuildContext ctx, snap) {
+                  if (snap.hasData) {
+                    if (globals.kVersion == null) globals.kVersion = snap.data.version;
+                    return versionContainer(snap.data.version);
+                  }
+                  return Container();
+                },
+              );
+            }, 
+          )
         ],
       ),
       drawer: Drawer(

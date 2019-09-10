@@ -48,7 +48,7 @@ class SyncPresenter {
       /// Syncs groups of 10 shopkeepers
       if (intNumKeepers > 0) {
         for (var i = 0; i < intNumKeepers; i++) {
-          print("saving group $i");
+          // print("saving group $i");
           List<Shopkeeper> currentKeepers = new List(10);
           currentKeepers.setRange(0, range, shopkeepers, i * range);
           
@@ -61,7 +61,7 @@ class SyncPresenter {
       if (mod != 0) {
         List<Shopkeeper> tmpKeepers = [];
         int numKeepersMod = mod;
-        print("saving rest");
+        // print("saving rest");
         for (var i = 0; i < numKeepersMod; i++) {
           tmpKeepers.add(shopkeepers[(shopkeepers.length - 1) - i]);
         }
@@ -78,7 +78,7 @@ class SyncPresenter {
 
   Future<bool> syncShopkeepersApi(List<Shopkeeper> keepers) async {
     var res = await _api.syncShopkeepers(keepers);
-    print(res);
+    // print(res);
     for (var i = 0; i < res.length; i++) {
       Shopkeeper keeper = await Shopkeeper().getKeeper(res[i]["id"]);
       keeper.idServer = res[i]["id_server"];

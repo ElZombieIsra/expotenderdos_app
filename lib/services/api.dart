@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart' as Foundation;
 
 class ExpoTenderosApi {
   NetworkService _netUtil = NetworkService();
-  static const BASE_URL = Foundation.kReleaseMode ? "https://expotendero.org/api" : "http://192.168.100.237/tenderos/public/api";
+  static const BASE_URL = Foundation.kReleaseMode ? "https://expotendero.org/api" : "http://10.0.2.2/tenderos/public/api";
   // static const BASE_URL = "https://expotendero.org/api";
   static const LOGIN_URL = BASE_URL + "/login";
   static const KEEPER_URL = BASE_URL + "/shopkeepers";
@@ -51,7 +51,7 @@ class ExpoTenderosApi {
     // await Future.delayed(Duration(seconds: 20));
     List shopkeepers = [];
     for (var keeper in keepers) {
-      print(keeper);
+      // print(keeper);
       try {
         File imgFile = File(keeper.shop.picture);
         List<int> bytes = await imgFile.readAsBytes();
