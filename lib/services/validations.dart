@@ -39,6 +39,17 @@ class Validations{
     }
   }
 
+  String validateFrigdeDoors(String doors) {
+    if(doors.isEmpty) return "Ingrese el número de puertas";
+    try {
+      int intDoors = int.parse(doors);
+      if(intDoors > 100) return "El número de puertas es demasiado grande";
+      return null;
+    } catch (e) {
+      return 'Ingrese un número en el campo "Puertas de refrigeradores"';
+    }
+  }
+
   String validateCode(String code) {
     if (code.isEmpty) return "Ingrese el código identificador del tendero";
     final RegExp codeExp = RegExp(r"[a-zA-Z\d]{6}");

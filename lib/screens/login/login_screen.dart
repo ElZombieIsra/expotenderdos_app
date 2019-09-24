@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:expotenderos_app/globals.dart' as globals;
 import 'package:expotenderos_app/services/validations.dart';
-import 'package:expotenderos_app/screens/Login/login_presenter.dart';
+import 'package:expotenderos_app/screens/login/login_presenter.dart';
 
 import 'package:expotenderos_app/models/User.dart';
 class LoginScreen extends StatefulWidget {

@@ -59,7 +59,7 @@ class Auth {
       localUser.loggedIn = true;
       await localUser.save();
 
-      this.syncCombos();
+      await this.syncCombos();
 
       return localUser;
     }
@@ -74,7 +74,7 @@ class Auth {
       user.loggedIn = true;
       await user.save();
 
-      this.syncCombos();
+      await this.syncCombos();
       
       return user;
     }
@@ -104,6 +104,8 @@ class Auth {
 
       /// Gets all activities from the server
       var res = await _api.syncCombos();
+
+      print(res);
 
       for (var combo in res['combos']) {
 

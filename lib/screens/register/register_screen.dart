@@ -28,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
+    TextEditingController(),
   ];
   bool autovalidate = false, _referred = false;
   Validations validations = Validations();
@@ -47,6 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: ListView(
           padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
           children: <Widget>[
+            /// Start radio
             ListTile(
               title: Text("El tendero es:"),
             ),
@@ -74,6 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               title: Text(shopkeeper.types[1]),
             ),
+            /// END Radio
             ListTile(
               title: TextFormField(
                 controller: _controllers[0],
@@ -137,18 +140,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               title: Text(shopkeeper.genders[1]),
             ),
-            // ListTile(
-            //   title: TextFormField(
-            //     controller: _controllers[3],
-            //     decoration: fieldDecoration(
-            //       label: true,
-            //       hint: "Edad (opcional)"
-            //     ),
-            //     keyboardType: TextInputType.number,
-            //     onSaved: (val) => val.isNotEmpty ? shopkeeper.age = int.parse(val) : 0,
-            //     validator: validations.validateAge,
-            //   ),
-            // ),
+            ListTile(
+              title: TextFormField(
+                controller: _controllers[3],
+                decoration: fieldDecoration(
+                  label: true,
+                  hint: "Edad (opcional)"
+                ),
+                keyboardType: TextInputType.number,
+                onSaved: (val) => val.isNotEmpty ? shopkeeper.age = int.parse(val) : 0,
+                validator: validations.validateAge,
+              ),
+            ),
             Divider(),
             ListTile(
               title: Text("Datos de la tienda"),
@@ -187,6 +190,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: validations.validatePostalCode,
               ),
             ),
+            /// START Radio Alpura
+            ListTile(
+              title: Text("¿Hay presencia de la marca alpura?"),
+            ),
+            ListTile(
+              leading: Radio(
+                value: 1,
+                groupValue: shopkeeper.alpura,
+                onChanged: (val){
+                  setState(() {
+                    shopkeeper.alpura = val; 
+                  });
+                },
+              ),
+              title: Text("SÍ"),
+            ),
+            ListTile(
+              leading: Radio(
+                value: 0,
+                groupValue: shopkeeper.alpura,
+                onChanged: (val){
+                  setState(() {
+                  shopkeeper.alpura = val; 
+                  });
+                },
+              ),
+              title: Text("NO"),
+            ),
+            /// END Radio Alpura
+            ListTile(
+              title: TextFormField(
+                controller: _controllers[10],
+                decoration: fieldDecoration(
+                  label: true,
+                  hint: "Número de puertas de refrigeradores"
+                ),
+                keyboardType: TextInputType.number,
+                onSaved: (val) => val.isNotEmpty ? shopkeeper.fridgeDoors = int.parse(val) : 0,
+                validator: validations.validateFrigdeDoors,
+              ),
+            ),
+            Divider(),
             ListTile(
               title: TextFormField(
                 textCapitalization: TextCapitalization.characters,
@@ -212,26 +257,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ListTile(
               title: Builder(
                 builder: (BuildContext ctx) {
-
-                  return FutureBuilder(
-                    future: presenter.getCurrentCombo(shopkeeper.combo),
-                    builder: (BuildContext ctx, snap) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Conferencias:'),
-                              snap.hasData ? Icon(Icons.edit, size: 15.0,) : Icon(Icons.add),
-                            ],
-                          ),
-                          snap.hasData ? ComboTile(snap.data) : Container(),
-                        ],
-                      );
-                    },
-                  );
-
+                  if (shopkeeper.combo != null) {
+                    return FutureBuilder(
+                      future: presenter.getCurrentCombo(shopkeeper.combo),
+                      builder: (BuildContext ctx, snap) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text('Conferencias:'),
+                                snap.hasData ? Icon(Icons.edit, size: 15.0,) : Icon(Icons.add),
+                              ],
+                            ),
+                            snap.hasData ? ComboTile(snap.data) : Container(),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  return Container();
                 },
               ),
               onTap: () {

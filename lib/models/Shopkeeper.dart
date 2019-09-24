@@ -14,6 +14,8 @@ class Shopkeeper{
   String phone;
   int gender;
   int age;
+  int alpura;
+  int fridgeDoors;
 
   Shop shop;
 
@@ -52,6 +54,11 @@ class Shopkeeper{
       }  
       this.age = obj["age"];
     }
+
+    this.alpura = obj["alpura"];
+    if (obj["fridge_doors"] != null) this.fridgeDoors = obj["fridge_doors"] is String ? int.parse(obj["fridge_doors"]) : obj["fridge_doors"];
+    else obj["frigde_doors"] = null;
+    
     this.shop = Shop.map(obj);
     this.code = obj["code"];
     this.combo = obj["combo"];
