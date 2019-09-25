@@ -118,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             ListTile(
               leading: Radio(
-                value: 0,
+                value: 1,
                 groupValue: shopkeeper.gender,
                 onChanged: (val){
                   setState(() {
@@ -130,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             ListTile(
               leading: Radio(
-                value: 1,
+                value: 2,
                 groupValue: shopkeeper.gender,
                 onChanged: (val){
                   setState(() {
@@ -257,27 +257,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ListTile(
               title: Builder(
                 builder: (BuildContext ctx) {
-                  if (shopkeeper.combo != null) {
-                    return FutureBuilder(
-                      future: presenter.getCurrentCombo(shopkeeper.combo),
-                      builder: (BuildContext ctx, snap) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('Conferencias:'),
-                                snap.hasData ? Icon(Icons.edit, size: 15.0,) : Icon(Icons.add),
-                              ],
-                            ),
-                            snap.hasData ? ComboTile(snap.data) : Container(),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  return Container();
+                  return FutureBuilder(
+                    future: presenter.getCurrentCombo(shopkeeper.combo),
+                    builder: (BuildContext ctx, snap) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Conferencias:'),
+                              snap.hasData ? Icon(Icons.edit, size: 15.0,) : Icon(Icons.add),
+                            ],
+                          ),
+                          snap.hasData ? ComboTile(snap.data) : Container(),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
               onTap: () {
@@ -389,8 +386,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: SingleChildScrollView(
                             child: Column(
                               children: <Widget>[
-                                Text("Aviso de privacidad para la protección de datos personales.\n\nEn términos de lo previsto en la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, la aportación que hagas de tus datos Personales a Gsfera S.A. de C.V. (Gsfera) la aceptación de estos Términos y Condiciones:\n\n1.- El presente Aviso tiene por objeto la protección de tus datos personales (tu nombre, tu número telefónico, el nombre de tu negocio (tienda), mediante su tratamiento legítimo, controlado e informado, a efecto de garantizar su privacidad, así como tu derecho a la autodeterminación informativa.\n\n2.- Conforme al artículo 3, fracción V, de la Ley, se entiende por Datos Personales: Cualquier información concerniente a una persona física identificada o identificable.\n\n3.- Gsfera, de conformidad a lo dispuesto por la fracción I del artículo 16 de la Ley, será el Responsable de tu información personal (Datos Personales). Gsfera hará uso de los datos únicamente para dar acceso a la “Expo Tendero” a realizarse el 06 de noviembre de 2019, así como para mantenerte al tanto de la información concerniente a Gsfera.\n\n4.- Al participar en el proceso de ingreso a la “Expo Tendero”, autorizas a Gsfera a utilizar y tratar de forma automatizada tus datos personales e información suministrados, los cuales formarán parte de nuestra base de datos con la finalidad de usarlos en forma enunciativa para identificarte, ubicarte, comunicarte, contactarte, enviarte información, actualizar nuestra base de datos y obtener estadísticas.\n\n6.- La temporalidad del manejo de tus Datos Personales será indefinida a partir de la fecha en que nos los proporciones.\n\n7.- Gsfera, como responsable del tratamiento de tus datos personales, está obligada a cumplir con los principios de licitud, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad tutelados en la Ley; por tal motivo con fundamento en los artículos 13 y 14 de la Ley, Gsfera se compromete a tratar tu información con normas de confidencialidad y seguridad administrativa.\n\n8.- En términos de lo establecido por el artículo 22 de la Ley, tienes derecho en cualquier momento a ejercer tus derechos de acceso, rectificación, cancelación y oposición al tratamiento de tus datos personales.\n\nEn caso de que requieras algún cambio deberás enviar un correo a ________________. En cumplimiento al artículo 29 de la Ley, dicha solicitud deberá contener los siguientes datos: a) Tu nombre y domicilio u otro medio para comunicarte la respuesta a tu solicitud; b) Los documentos que acrediten tu identidad o, en su caso, la representación legal de la persona que realiza la solicitud a tu nombre; c) La descripción clara y precisa de los datos personales respecto de los que buscas ejercer alguno de los derechos mencionados en el párrafo anterior, y d) Cualquier otro elemento o documento que facilite la localización de tus datos personales. En caso de solicitar la rectificación de datos personales, adicionalmente deberás indicar las modificaciones a realizarse y aportar la documentación que sustente tu petición. La respuesta a tu solicitud se te comunicará en un plazo de veinte días hábiles, contados desde la fecha en que se recibió, pudiendo ampliarse a veinte días más en los casos que así lo establezcan la Ley; a efecto de que de resultar procedente, se lleven a cabo las medidas adoptadas para cumplir con tu solicitud, mismas que se llevarán a cabo dentro de los quince días hábiles siguientes a la fecha en que se comunique la respuesta.\n\n9.- Te sugerimos conocer y analizar el contenido de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares pues pueden generarse cambios normativos a los que estamos sujetos.", 
+                                Text("""Aviso de privacidad para la protección de datos personales.
+
+En términos de lo previsto en la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, la aportación que hagas de tus datos Personales a Effective Live S.A de C.V la aceptación de estos Términos y Condiciones:
+
+1.- El presente Aviso tiene por objeto la protección de tus datos personales (tu nombre, tu número telefónico, el nombre de tu negocio (tienda), mediante su tratamiento legítimo, controlado e informado, a efecto de garantizar su privacidad, así como tu derecho a la autodeterminación informativa.
+
+2.- Conforme al artículo 3, fracción V, de la Ley, se entiende por Datos Personales: Cualquier información concerniente a una persona física identificada o identificable.
+
+3.- Gsfera, de conformidad a lo dispuesto por la fracción I del artículo 16 de la Ley, será el Responsable de tu información personal (Datos Personales). Effective Live S.A de C.V hará uso de los datos únicamente para dar acceso a la “Expo Tendero” a realizarse el 06 de noviembre de 2019, así como para mantenerte al tanto de la información concerniente a Effective Live S.A de C.V.
+
+4.- Al participar en el proceso de ingreso a la “Expo Tendero”, autorizas a Effective Live S.A de C.V a utilizar y tratar de forma automatizada tus datos personales e información suministrados, los cuales formarán parte de nuestra base de datos con la finalidad de usarlos en forma enunciativa para identificarte, ubicarte, comunicarte, contactarte, enviarte información, actualizar nuestra base de datos y obtener estadísticas.
+
+6.- La temporalidad del manejo de tus Datos Personales será indefinida a partir de la fecha en que nos los proporciones.
+
+7.-Effective Live S.A de C.V, como responsable del tratamiento de tus datos personales, está obligada a cumplir con los principios de licitud, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad tutelados en la Ley; por tal motivo con fundamento en los artículos 13 y 14 de la Ley, Effective Live S.A de C.V se compromete a tratar tu información con normas de confidencialidad y seguridad administrativa.
+
+8.- En términos de lo establecido por el artículo 22 de la Ley, tienes derecho en cualquier momento a ejercer tus derechos de acceso, rectificación, cancelación y oposición al tratamiento de tus datos personales.
+
+En caso de que requieras algún cambio deberás enviar un correo a ________________. En cumplimiento al artículo 29 de la Ley, dicha solicitud deberá contener los siguientes datos: a) Tu nombre y domicilio u otro medio para comunicarte la respuesta a tu solicitud; b) Los documentos que acrediten tu identidad o, en su caso, la representación legal de la persona que realiza la solicitud a tu nombre; c) La descripción clara y precisa de los datos personales respecto de los que buscas ejercer alguno de los derechos mencionados en el párrafo anterior, y d) Cualquier otro elemento o documento que facilite la localización de tus datos personales. En caso de solicitar la rectificación de datos personales, adicionalmente deberás indicar las modificaciones a realizarse y aportar la documentación que sustente tu petición. La respuesta a tu solicitud se te comunicará en un plazo de veinte días hábiles, contados desde la fecha en que se recibió, pudiendo ampliarse a veinte días más en los casos que así lo establezcan la Ley; a efecto de que de resultar procedente, se lleven a cabo las medidas adoptadas para cumplir con tu solicitud, mismas que se llevarán a cabo dentro de los quince días hábiles siguientes a la fecha en que se comunique la respuesta.
+
+9.- Te sugerimos conocer y analizar el contenido de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares pues pueden generarse cambios normativos a los que estamos sujetos.""", 
                                   textAlign: TextAlign.justify,
+                                  style: TextStyle(fontSize: 12),
                                 ),
                               ],
                             ),
