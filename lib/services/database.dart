@@ -24,7 +24,7 @@ class DatabaseHelper {
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "main.db");
-    var theDb = await openDatabase(path, version: 1, onCreate: _onCreate);
+    var theDb = await openDatabase(path, version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return theDb;
   }
   
@@ -32,10 +32,22 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute("CREATE TABLE User(id INTEGER  PRIMARY KEY NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, loggedIn INT, token TEXT)");
-    await db.execute("CREATE TABLE Shopkeepers(id INTEGER PRIMARY KEY NOT NULL, id_server INT, type INT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, phone TEXT NOT NULL, gender INT, age INT, alpura INT DEFAULT 0, fridge_doors INT DEFAULT 0, shop_name TEXT NOT NULL, shop_address TEXT NOT NULL, shop_postal_code INT NOT NULL, shop_picture TEXT NOT NULL, shop_location TEXT NOT NULL, code TEXT NOT NULL, privacy INT NOT NULL, synced INT DEFAULT 0 NOT NULL, combo INT, referred_name TEXT, referred_code INT)");
+    await db.execute("CREATE TABLE Shopkeepers(id INTEGER PRIMARY KEY NOT NULL, id_server INT, type INT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, phone TEXT NOT NULL, gender INT, age INT, alpura INT DEFAULT 0 NOT NULL, fridge_doors INT DEFAULT 0 NOT NULL, shop_name TEXT NOT NULL, shop_address TEXT NOT NULL, shop_postal_code INT NOT NULL, shop_picture TEXT NOT NULL, shop_location TEXT NOT NULL, code TEXT NOT NULL, privacy INT NOT NULL, synced INT DEFAULT 0 NOT NULL, combo INT, referred_name TEXT, referred_code INT)");
     await db.execute("CREATE TABLE Activity(id INTEGER PRIMARY KEY NOT NULL, capacity_site INT NOT NULL, activity TEXT NOT NULL, speaker TEXT, description TEXT, type INT NOT NULL, subtype INT, status INT, hour_ini TEXT, hour_fin TEXT, id_combo INT)");
     await db.execute("CREATE TABLE Combos(id INTEGER PRIMARY KEY NOT NULL, name TEXT, hour TEXT)");
     print("Created tables");
+  }
+
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+    print("Upgrading DB");
+    print("Old version: $oldVersion. New version: $newVersion");
+    if (oldVersion < newVersion) {
+      if (oldVersion == 1 && newVersion >= 2) {
+        db.execute("ALTER TABLE Shopkeepers ADD COLUMN alpura INT DEFAULT 0 NOT NULL");
+        db.execute("ALTER TABLE Shopkeepers ADD COLUMN fridge_doors INT DEFAULT 0 NOT NULL");
+      }
+    }
+    print("Upgraded DB");
   }
 
   Future<int> saveUser(User user) async {

@@ -56,8 +56,9 @@ class Shopkeeper{
     }
 
     this.alpura = obj["alpura"];
-    if (obj["fridge_doors"] != null) this.fridgeDoors = obj["fridge_doors"] is String ? int.parse(obj["fridge_doors"]) : obj["fridge_doors"];
-    else obj["frigde_doors"] = null;
+    if (obj["fridge_doors"] != null) this.fridgeDoors = obj["fridge_doors"] is String 
+      ? int.parse(obj["fridge_doors"]) 
+      : obj["fridge_doors"];
     
     this.shop = Shop.map(obj);
     this.code = obj["code"];
@@ -94,6 +95,8 @@ class Shopkeeper{
     map["phone"] = this.phone;
     if (gender != null) map["gender"] = this.gender;
     if (age != null) map["age"] = this.age;
+    map["alpura"] = this.alpura;
+    map["fridge_doors"] = this.fridgeDoors;
 
     map["shop_name"] = this.shop.name;
     map["shop_address"] = this.shop.address;

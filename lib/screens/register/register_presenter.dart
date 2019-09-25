@@ -27,9 +27,8 @@ class RegisterPresenter {
     String ageVal = validations.validateAge(controllers[3].text);
     String storeNameVal = validations.validateShopName(controllers[4].text);
     String storeAddressVal = validations.validateShopAddress(controllers[5].text);
-    String storePostalCodeVal = validations.validatePostalCode(controllers[7].text);
     String codeVal = validations.validateCode(controllers[6].text);
-    String referredNameVal = validations.validateName(controllers[8].text);
+    String storePostalCodeVal = validations.validatePostalCode(controllers[7].text);
     String fridgeDoorsVal = validations.validateFrigdeDoors(controllers[10].text);
     if (nameVal != null) return nameVal;
     if (emailVal != null) return emailVal;
@@ -39,7 +38,10 @@ class RegisterPresenter {
     if (storeAddressVal != null) return storeAddressVal;
     if (storePostalCodeVal != null) return storePostalCodeVal;
     if (codeVal != null) return codeVal;
-    if (referredNameVal != null) return referredNameVal;
+    if (controllers[8].text.isNotEmpty) {
+      String referredNameVal = validations.validateName(controllers[8].text);
+      if (referredNameVal != null) return referredNameVal;
+    }
     if (fridgeDoorsVal != null) return fridgeDoorsVal;
     form.currentState.save();
     return null;
@@ -56,7 +58,7 @@ class RegisterPresenter {
     shopkeeper.shop.address = controllers[5].text;
 
     shopkeeper.shop.location = await getCoordinates();
-
+    shopkeeper.fridgeDoors = int.parse(controllers[10].text);
     shopkeeper.code = controllers[6].text;
     shopkeeper.shop.postalCode = int.parse(controllers[7].text);
 
@@ -119,7 +121,6 @@ class RegisterPresenter {
   }
 
   Future<Combo> getCurrentCombo(int id) async {
-
     Combo combo = await Combo().first(id: id);
     await combo.getActivities();
     return combo;
